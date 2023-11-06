@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { Box } from "@mui/material";
-import * as yup from "yup";
+// import * as yup from "yup";
 import { H3 } from "components/Typography";
-import { ProductForm } from "pages-sections/admin";
+import { ProductDetails } from "pages-sections/admin";
 import VendorDashboardLayout from "components/layouts/vendor-dashboard";
+import { useApi } from "contexts/AxiosContext";
 // import api from "utils/__api__/products";
 
 // =============================================================================
@@ -13,53 +14,54 @@ EditProduct.getLayout = function getLayout(page) {
 };
 // =============================================================================
 
-const INITIAL_VALUES = {
-  name: "",
-  tags: "",
-  stock: "",
-  price: 0,
-  category: [],
-  sale_price: "",
-  description: "",
-};
+// const INITIAL_VALUES = {
+//   name: "",
+//   tags: "",
+//   stock: "",
+//   price: 0,
+//   category: [],
+//   sale_price: "",
+//   description: "",
+// };
 
 // form field validation schema
-const validationSchema = yup.object().shape({
-  name: yup.string().required("required"),
-  category: yup.array().min(1).required("required"),
-  description: yup.string().required("required"),
-  stock: yup.number().required("required"),
-  price: yup.number().required("required"),
-  sale_price: yup.number().required("required"),
-  tags: yup.string().required("required"),
-});
+// const validationSchema = yup.object().shape({
+//   name: yup.string().required("required"),
+//   category: yup.array().min(1).required("required"),
+//   description: yup.string().required("required"),
+//   stock: yup.number().required("required"),
+//   price: yup.number().required("required"),
+//   sale_price: yup.number().required("required"),
+//   tags: yup.string().required("required"),
+// });
 export default function EditProduct() {
   const { query } = useRouter();
+  const { slug } = query;
   const [product, setProduct] = useState({
-    ...INITIAL_VALUES,
   });
+  const { api } = useApi();
 
-  // useEffect(() => {
-  //   api.getProduct(query.slug as string).then((data) => {
-  //     setProduct((state) => ({
-  //       ...state,
-  //       name: data.title,
-  //       price: data.price,
-  //       category: data.categories,
-  //     }));
-  //   });
-  // }, [query.slug]);
+  useEffect(() => {    
+    if(slug) {
+      api.get(
+        `/proyecto/${slug}`,
+        ).then((response) => {
+          console.log(response);
+          setProduct(response.data);
+        })
+    }
+  }, [slug]);
 
-  const handleFormSubmit = () => {};
   return (
     <Box py={4}>
-      <H3 mb={2}>Edit Product</H3>
+      <H3 mb={2}>{product.nombre}</H3>
+        <ProductDetails
+          product={product}
+          // validationSchema={validationSchema}
+          // handleFormSubmit={handleFormSubmit}
+        />
 
-      <ProductForm
-        initialValues={product}
-        validationSchema={validationSchema}
-        handleFormSubmit={handleFormSubmit}
-      />
+      
     </Box>
   );
 }

@@ -1,7 +1,7 @@
 // import getConfig from "next/config";
 import ceil from "lodash/ceil";
 import { differenceInMinutes } from "date-fns";
-import currencyJs from "currency.js";
+// import currencyJs from "currency.js";
 
 /**
  * GET THE DIFFERENCE DATE FORMAT
@@ -58,21 +58,21 @@ function calculateDiscount(price, discount) {
  * @returns - RETURN PRICE WITH CURRENCY
  */
 
-function currency(price, fraction = 2) {
-  const formatCurrency = currencyJs(price).format({
-    precision: fraction,
-  });
-  return formatCurrency;
+function currency(price) {
+  // const formatCurrency = currencyJs(price).format({
+  //   fromCents: true
+  // });
+  // return formatCurrency;
 
   // const { publicRuntimeConfig } = getConfig();
-  // const formatCurrency = new Intl.NumberFormat(undefined, {
-  //   style: "currency",
-  //   currency: publicRuntimeConfig.currency,
-  //   maximumFractionDigits: fraction,
-  //   minimumFractionDigits: fraction,
-  // });
+  const roundedPrice = Math.round(price);
+  const formatCurrency = new Intl.NumberFormat("US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 2,
+  });
 
-  // return formatCurrency.format(price);
+  return formatCurrency.format(roundedPrice/100);
 }
 
 export { renderProductCount, calculateDiscount, currency, getDateDifference };

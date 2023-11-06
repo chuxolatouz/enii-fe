@@ -1,40 +1,24 @@
+import { useEffect, useState } from 'react';
 import { Box, Card, Stack, Table, TableContainer } from "@mui/material";
 import TableBody from "@mui/material/TableBody";
 import { H3 } from "components/Typography";
 import Scrollbar from "components/Scrollbar";
-import SearchArea from "components/dashboard/SearchArea";
 import TableHeader from "components/data-table/TableHeader";
 import TablePagination from "components/data-table/TablePagination";
 import VendorDashboardLayout from "components/layouts/vendor-dashboard";
-import useMuiTable from "hooks/useMuiTable";
 import { CustomerRow } from "pages-sections/admin";
-import api from "utils/__api__/dashboard";
+import { useApi } from 'contexts/AxiosContext';
 
 // table column list
 const tableHeading = [
   {
-    id: "name",
+    id: "Nombre",
     label: "Name",
-    align: "left",
-  },
-  {
-    id: "phone",
-    label: "Phone",
     align: "left",
   },
   {
     id: "email",
     label: "Email",
-    align: "left",
-  },
-  {
-    id: "balance",
-    label: "Wallet Balance",
-    align: "left",
-  },
-  {
-    id: "orders",
-    label: "No Of Orders",
     align: "left",
   },
   {
@@ -52,28 +36,59 @@ CustomerList.getLayout = function getLayout(page) {
 
 // =============================================================================
 
-export default function CustomerList({ customers }) {
-  const {
-    order,
-    orderBy,
-    selected,
-    rowsPerPage,
-    filteredList,
-    handleChangePage,
-    handleRequestSort,
-  } = useMuiTable({
-    listData: customers,
+export default function CustomerList() {
+  const [data, setData] = useState([]);
+  const [totalCount, setTotalCount] = useState(0);
+  const [pagination, setPagination] = useState({
+    skip: 0,
+    page: 0,
+    limit: 10
   });
+  // const [toast, setToast] = useState({ open: false, error: false });
+  const { api } = useApi();
+
+  useEffect(() => {
+    api.get(
+      `/mostrar_usuarios?page=${pagination.page}`,
+    ).then((respon) => {
+      setTotalCount(pagination.total);
+      setData(respon.data.request_list);
+    });
+  }, [pagination])
+
+  const handleChangePage = (_, page) => {
+    setPagination((prevPagination) => ({
+      ...prevPagination,
+      skip: page * prevPagination.limit,
+      page: page
+    }));
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    const newLimit = parseInt(event.target.value, 10);
+    setPagination((prevPagination) => ({
+      ...prevPagination,
+      skip: 0,
+      page: 0,
+      limit: newLimit
+    }));
+  };
+
+  // const {
+  //   order,
+  //   orderBy,
+  //   selected,
+  //   rowsPerPage,
+  //   filteredList,
+  //   handleChangePage,
+  //   handleRequestSort,
+  // } = useMuiTable({
+  //   listData: customers,
+  // });
+
   return (
     <Box py={4}>
-      <H3 mb={2}>Customers</H3>
-
-      <SearchArea
-        handleSearch={() => {}}
-        buttonText="Add Customer"
-        handleBtnClick={() => {}}
-        searchPlaceholder="Search Customer..."
-      />
+      <H3 mb={2}>Usuarios</H3>
 
       <Card>
         <Scrollbar>
@@ -84,17 +99,12 @@ export default function CustomerList({ customers }) {
           >
             <Table>
               <TableHeader
-                order={order}
                 hideSelectBtn
-                orderBy={orderBy}
                 heading={tableHeading}
-                numSelected={selected.length}
-                rowCount={filteredList.length}
-                onRequestSort={handleRequestSort}
               />
 
               <TableBody>
-                {filteredList.map((customer) => (
+                { data.map((customer) => (
                   <CustomerRow customer={customer} key={customer.id} />
                 ))}
               </TableBody>
@@ -103,20 +113,15 @@ export default function CustomerList({ customers }) {
         </Scrollbar>
 
         <Stack alignItems="center" my={4}>
-          <TablePagination
-            onChange={handleChangePage}
-            count={Math.ceil(filteredList.length / rowsPerPage)}
+        <TablePagination
+            onPageChange={handleChangePage}
+            page={pagination.page}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+            rowsPerPage={pagination.limit}
+            count={totalCount || 0}
           />
         </Stack>
       </Card>
     </Box>
   );
 }
-export const getStaticProps = async () => {
-  const customers = await api.customers();
-  return {
-    props: {
-      customers,
-    },
-  };
-};

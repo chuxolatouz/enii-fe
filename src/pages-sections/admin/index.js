@@ -7,6 +7,7 @@ import CategoryRow from "./category/CategoryRow";
 import CategoryForm from "./category/CategoryForm";
 import ProductRow from "./products/ProductRow";
 import ProductForm from "./products/ProductForm";
+import ProductDetails from "./products/ProductDetails";
 import OrderRow from "./orders/OrderRow";
 import OrderDetails from "./orders/OrderDetails";
 import SellerRow from "./sellers/SellerRow";
@@ -28,6 +29,7 @@ export {
   CustomerRow,
   CategoryRow,
   ProductForm,
+  ProductDetails,
   CategoryForm,
   OrderDetails,
   RefundRequestRow,

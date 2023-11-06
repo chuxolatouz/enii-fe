@@ -6,7 +6,9 @@ import { appWithTranslation } from "next-i18next";
 import RTL from "components/RTL";
 import MuiTheme from "theme/MuiTheme";
 import OpenGraphTags from "utils/OpenGraphTags";
+import RouteGuard from "components/RouteGuard";
 import { AppProvider } from "contexts/AppContext";
+import { AxiosProvider } from "contexts/AxiosContext";
 import SettingsProvider from "contexts/SettingContext";
 import SnackbarProvider from "components/SnackbarProvider";
 import createEmotionCache from "createEmotionCache";
@@ -39,16 +41,20 @@ const App = (props) => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
         <OpenGraphTags />
-        <title>Bazaar - Next.js Ecommerce Template</title>
+        <title>ENII - Universidad Central de Venezuela</title>
       </Head>
 
       <SettingsProvider>
         <AppProvider>
-          <MuiTheme>
-            <SnackbarProvider>
-              <RTL>{getLayout(<Component {...pageProps} />)}</RTL>
-            </SnackbarProvider>
-          </MuiTheme>
+          <RouteGuard>
+            <AxiosProvider>
+              <MuiTheme>
+                <SnackbarProvider>
+                  <RTL>{getLayout(<Component {...pageProps} />)}</RTL>
+                </SnackbarProvider>
+              </MuiTheme>
+            </AxiosProvider>
+          </RouteGuard>
         </AppProvider>
       </SettingsProvider>
     </CacheProvider>

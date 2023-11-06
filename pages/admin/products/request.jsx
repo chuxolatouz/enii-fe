@@ -6,7 +6,8 @@ import TablePagination from "components/data-table/TablePagination";
 import VendorDashboardLayout from "components/layouts/vendor-dashboard";
 import { H3 } from "components/Typography";
 import Scrollbar from "components/Scrollbar";
-import { ProductRow } from "pages-sections/admin";
+import { RefundRequestRow } from "pages-sections/admin";
+import { useSnackbar } from "notistack";
 import { useApi } from 'contexts/AxiosContext';
 // TABLE HEADING DATA LIST
 const tableHeading = [
@@ -31,11 +32,6 @@ const tableHeading = [
   //   align: "left",
   // },
   {
-    id: "balance",
-    label: "Balance",
-    align: "left",
-  },
-  {
     id: "action",
     label: "Accion",
     align: "center",
@@ -43,14 +39,14 @@ const tableHeading = [
 ];
 
 // =============================================================================
-ProductList.getLayout = function getLayout(page) {
+RequestList.getLayout = function getLayout(page) {
   return <VendorDashboardLayout>{page}</VendorDashboardLayout>;
 };
 // =============================================================================
 
 // =============================================================================
 
-export default function ProductList() {
+export default function RequestList() {
   const [projects, setProjects] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
   const [pagination, setPagination] = useState({
@@ -60,13 +56,16 @@ export default function ProductList() {
   });
 
   const { api } = useApi();
-
+  const { enqueueSnackbar } = useSnackbar();
   useEffect(() => {
     api.get(
-      `/mostrar_proyectos?page=${pagination.page}`,
+      `/mostrar_solicitudes?page=${pagination.page}`,
     ).then((respon) => {
       setTotalCount(pagination.total);
       setProjects(respon.data.request_list);
+    }).catch((error) => {
+        console.log(error)
+        enqueueSnackbar(error.message, { variant: "error" })
     });
   }, [pagination])
 
@@ -89,7 +88,7 @@ export default function ProductList() {
   };
   return (
     <Box py={4}>
-      <H3 mb={2}>Lista de Proyectos</H3>
+      <H3 mb={2}>Lista de Solicitudes</H3>
       <Card>
         <Scrollbar autoHide={false}>
           <TableContainer
@@ -106,7 +105,7 @@ export default function ProductList() {
 
               <TableBody>
                 {projects.map((product, index) => (
-                  <ProductRow product={product} key={index} />
+                  <RefundRequestRow product={product} key={index} />
                 ))}
               </TableBody>
             </Table>
