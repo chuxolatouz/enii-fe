@@ -21,11 +21,21 @@ export const navigations = [
         name: "Crear Proyecto",
         path: "/admin/products/create",
       },
-      {
-        name: "Solicitudes",
-        path: "/admin/products/request",
-      },
     ],
+  },
+  {
+    name: "Reglas Fijas",
+    icon: duotone.AccountSetting,
+    children: [
+      {
+        name: "Crear Solicitud",
+        path: "/admin/request/create"
+      },
+      {
+        name: "Lista de Solicitudes",
+        path: "/admin/request",
+      },
+    ]
   },
   {
     name: "Usuarios",

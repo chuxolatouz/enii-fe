@@ -48,7 +48,7 @@ const StyledIconButton = styled(IconButton)(({ theme }) => ({
 const StatusWrapper = styled(Box)(({ theme, status }) => {
   let color = theme.palette.secondary.main;
   let backgroundColor = theme.palette.secondary[100];
-  if (status === "Accepted" || status === "Delivered" || status === "Normal") {
+  if (status === "Accepted" || status === "Delivered" || status === "Normal" || status === "completed" ) {
     color = theme.palette.success.main;
     backgroundColor = theme.palette.success[100];
   }
@@ -60,7 +60,7 @@ const StatusWrapper = styled(Box)(({ theme, status }) => {
     color = theme.palette.warning.main;
     backgroundColor = theme.palette.warning[100];
   }
-  if (status === "Pending") {
+  if (status === "Pending" || status === "new") {
     color = theme.palette.info.main;
     backgroundColor = theme.palette.info[100];
   }

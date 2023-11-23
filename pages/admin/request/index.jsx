@@ -6,7 +6,7 @@ import TablePagination from "components/data-table/TablePagination";
 import VendorDashboardLayout from "components/layouts/vendor-dashboard";
 import { H3 } from "components/Typography";
 import Scrollbar from "components/Scrollbar";
-import { RefundRequestRow } from "pages-sections/admin";
+import { RequestRow } from "pages-sections/admin";
 import { useSnackbar } from "notistack";
 import { useApi } from 'contexts/AxiosContext';
 // TABLE HEADING DATA LIST
@@ -17,13 +17,13 @@ const tableHeading = [
     align: "left",
   },
   {
-    id: "fecha_inicio",
-    label: "Fecha Inicio",
+    id: "reglas",
+    label: "Reglas",
     align: "left",
   },
   {
-    id: "fecha_fin",
-    label: "Fecha Fin",
+    id: "status",
+    label: "status",
     align: "left",
   },
   // {
@@ -47,7 +47,7 @@ RequestList.getLayout = function getLayout(page) {
 // =============================================================================
 
 export default function RequestList() {
-  const [projects, setProjects] = useState([]);
+  const [rules, setRules] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
   const [pagination, setPagination] = useState({
     skip: 0,
@@ -62,7 +62,7 @@ export default function RequestList() {
       `/mostrar_solicitudes?page=${pagination.page}`,
     ).then((respon) => {
       setTotalCount(pagination.total);
-      setProjects(respon.data.request_list);
+      setRules(respon.data.request_list);
     }).catch((error) => {
         console.log(error)
         enqueueSnackbar(error.message, { variant: "error" })
@@ -100,12 +100,12 @@ export default function RequestList() {
               <TableHeader
                 hideSelectBtn
                 heading={tableHeading}
-                rowCount={projects.length}                
+                rowCount={rules.length}                
               />
 
               <TableBody>
-                {projects.map((product, index) => (
-                  <RefundRequestRow product={product} key={index} />
+                {rules.map((rules, index) => (
+                  <RequestRow request={rules} key={index} />
                 ))}
               </TableBody>
             </Table>

@@ -1,10 +1,10 @@
-import { useState } from "react";
 import { Button, Card, Grid, MenuItem, TextField } from "@mui/material";
+import addDays from "date-fns/addDays";
+import parseISO from "date-fns/parseISO";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { Formik } from "formik";
-import DropZone from "components/DropZone";
-import { FlexBox } from "components/flex-box";
-import BazaarImage from "components/BazaarImage";
-import { UploadImageBox, StyledClear } from "../StyledComponents";
 
 // ================================================================
 
@@ -12,22 +12,7 @@ import { UploadImageBox, StyledClear } from "../StyledComponents";
 
 const ProductForm = (props) => {
   const { initialValues, validationSchema, handleFormSubmit } = props;
-  const [files, setFiles] = useState([]);
 
-  // HANDLE UPDATE NEW IMAGE VIA DROP ZONE
-  const handleChangeDropZone = (files) => {
-    files.forEach((file) =>
-      Object.assign(file, {
-        preview: URL.createObjectURL(file),
-      })
-    );
-    setFiles(files);
-  };
-
-  // HANDLE DELETE UPLOAD IMAGE
-  const handleFileDelete = (file) => () => {
-    setFiles((files) => files.filter((item) => item.name !== file.name));
-  };
   return (
     <Card
       sx={{
@@ -88,21 +73,6 @@ const ProductForm = (props) => {
               </Grid>
 
               <Grid item xs={12}>
-                <DropZone onChange={(files) => handleChangeDropZone(files)} />
-
-                <FlexBox flexDirection="row" mt={2} flexWrap="wrap" gap={1}>
-                  {files.map((file, index) => {
-                    return (
-                      <UploadImageBox key={index}>
-                        <BazaarImage src={file.preview} width="100%" />
-                        <StyledClear onClick={handleFileDelete(file)} />
-                      </UploadImageBox>
-                    );
-                  })}
-                </FlexBox>
-              </Grid>
-
-              <Grid item xs={12}>
                 <TextField
                   rows={6}
                   multiline
@@ -118,73 +88,69 @@ const ProductForm = (props) => {
                   error={!!touched.description && !!errors.description}
                   helperText={touched.description && errors.description}
                 />
-              </Grid>
-              <Grid item sm={6} xs={12}>
-                <TextField
-                  fullWidth
-                  name="stock"
-                  color="info"
-                  size="medium"
-                  label="Stock"
-                  placeholder="Stock"
-                  onBlur={handleBlur}
-                  value={values.stock}
-                  onChange={handleChange}
-                  error={!!touched.stock && !!errors.stock}
-                  helperText={touched.stock && errors.stock}
-                />
-              </Grid>
-              <Grid item sm={6} xs={12}>
-                <TextField
-                  fullWidth
-                  name="tags"
-                  label="Tags"
-                  color="info"
-                  size="medium"
-                  placeholder="Tags"
-                  onBlur={handleBlur}
-                  value={values.tags}
-                  onChange={handleChange}
-                  error={!!touched.tags && !!errors.tags}
-                  helperText={touched.tags && errors.tags}
-                />
-              </Grid>
-              <Grid item sm={6} xs={12}>
-                <TextField
-                  fullWidth
-                  name="price"
-                  color="info"
-                  size="medium"
-                  type="number"
-                  onBlur={handleBlur}
-                  value={values.price}
-                  label="Regular Price"
-                  onChange={handleChange}
-                  placeholder="Regular Price"
-                  error={!!touched.price && !!errors.price}
-                  helperText={touched.price && errors.price}
-                />
-              </Grid>
-              <Grid item sm={6} xs={12}>
-                <TextField
-                  fullWidth
-                  color="info"
-                  size="medium"
-                  type="number"
-                  name="sale_price"
-                  label="Sale Price"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  placeholder="Sale Price"
-                  value={values.sale_price}
-                  error={!!touched.sale_price && !!errors.sale_price}
-                  helperText={touched.sale_price && errors.sale_price}
-                />
-              </Grid>
+              </Grid>              
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <Grid item md={6} xs={12}>
+
+                <DatePicker
+                  label="Fecha de Inicio"
+                  // maxDate={new Date()}
+                  value={addDays(parseISO(values.date), 1)}
+                  onChange={(newValue) =>
+                    setFieldValue("fecha_inicio", newValue)
+                  }
+                  slots={{
+                    textField: TextField,
+                  }}
+                  slotProps={{
+                    textField: {
+                      sx: {
+                        mb: 1,
+                      },
+                      size: "medium",
+                      fullWidth: true,
+                      value: values.date,
+                      helperText: touched.fecha_inicio && errors.fecha_inicio,
+                      error: Boolean(
+                        !!touched.fecha_inicio && !!errors.fecha_inicio
+                        ),
+                      },
+                    }}
+                    />
+                </Grid>
+                <Grid item md={6} xs={12}>
+                  <DatePicker
+                    label="Fecha Fin"
+                    // maxDate={new Date()}
+                    value={addDays(parseISO(values.date), 1)}
+                    onChange={(newValue) =>
+                      setFieldValue("fecha_inicio", newValue)
+                    }
+                    slots={{
+                      textField: TextField,
+                    }}
+                    slotProps={{
+                      textField: {
+                        sx: {
+                          mb: 1,
+                        },
+                        size: "medium",
+                        fullWidth: true,
+                        value: values.date,
+                        helperText: touched.fecha_inicio && errors.fecha_inicio,
+                        error: Boolean(
+                          !!touched.fecha_inicio && !!errors.fecha_inicio
+                        ),
+                      },
+                    }}
+                  />
+                </Grid>
+              </LocalizationProvider>
+                    
 
               <Grid item sm={6} xs={12}>
                 <Button variant="contained" color="info" type="submit">
-                  Save product
+                  Crear
                 </Button>
               </Grid>
             </Grid>

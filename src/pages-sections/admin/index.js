@@ -10,6 +10,8 @@ import ProductForm from "./products/ProductForm";
 import ProductDetails from "./products/ProductDetails";
 import OrderRow from "./orders/OrderRow";
 import OrderDetails from "./orders/OrderDetails";
+import RequestForm from "./request/RequestForm";
+import RequestRow from "./request/RequestRow";
 import SellerRow from "./sellers/SellerRow";
 import SellerPackageCard from "./sellers/SellerPackageCard";
 import {
@@ -30,6 +32,8 @@ export {
   CategoryRow,
   ProductForm,
   ProductDetails,
+  RequestForm,
+  RequestRow,
   CategoryForm,
   OrderDetails,
   RefundRequestRow,
