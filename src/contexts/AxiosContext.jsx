@@ -1,11 +1,12 @@
 import React, { createContext, useContext, useMemo } from 'react';
 import axios from 'axios';
+import { useRouter } from 'next/router';
 
 export const AxiosContext = createContext();
 
 export function AxiosProvider({ children }) {
   const BASE_URL = 'http://127.0.0.1:5000/';
-
+  const router = useRouter();
   const token = localStorage.getItem('token');
   
   const api = useMemo(() => {
@@ -20,7 +21,7 @@ export function AxiosProvider({ children }) {
       requestHeaders.Authorization = `Bearer ${token}`;
     }
 
-    return axios.create({
+    const axiosInstance = axios.create({
       baseURL: BASE_URL,
       headers: requestHeaders,
       transformRequest: [(data, headers) => {
@@ -34,6 +35,20 @@ export function AxiosProvider({ children }) {
         return JSON.stringify(data);
       }],
     });
+
+    axiosInstance.interceptors.response.use(
+      response => response,
+      error => {
+        if (error.response && error.response.status === 403) {
+          // Eliminar el token y redireccionar a la página de inicio de sesión
+          localStorage.removeItem('token');
+          router.push('/login');
+        }
+        return Promise.reject(error);
+      }
+    );
+
+    return axiosInstance;
   }, [BASE_URL]);
 
   return (

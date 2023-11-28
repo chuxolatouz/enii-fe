@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 import { useApi } from 'contexts/AxiosContext';
 import { useSnackbar } from 'notistack';
+import Router from 'next/router';
 
 function AsignarMiembro({ id }) {
   const [open, setOpen] = useState(false);
@@ -42,9 +43,9 @@ function AsignarMiembro({ id }) {
     };
     // eslint-disable-next-line no-unused-vars
     api.patch('asignar_usuario_proyecto', data).then(() => {
-      navigate(0);
+      Router.reload();
     }).catch((error) => {
-      enqueueSnackbar(error.message, 'error');
+      enqueueSnackbar(error.message, { variant: 'error' });
     });
   };
 
@@ -52,12 +53,12 @@ function AsignarMiembro({ id }) {
     api.get('/roles').then((response) => {
       setRoles(response.data);
     }).catch((error) => {
-      enqueueSnackbar(error.message, 'error');
+      enqueueSnackbar(error.message, { variant: 'error' });
     });
     api.get('/mostrar_usuarios').then((response) => {
       setUsers(response.data.request_list);
     }).catch((error) => {
-      enqueueSnackbar(error.message, 'error');
+      enqueueSnackbar(error.message, { variant: 'error' });
     });
   }, []);
 

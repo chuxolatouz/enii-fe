@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import Box from '@mui/material/Box';
 import {
   Table,
   TableContainer,
@@ -12,20 +11,21 @@ import {
   DialogTitle,
   DialogActions,
   Button,
+  Box,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Paper from '@mui/material/Paper';
+import Router from 'next/router';
+import { useSnackbar } from 'notistack';
 import AddUser from './actions/add/AddUser';
 import { useApi } from 'contexts/AxiosContext';
-// import { useSnackbar } from '../../contexts/SnackbarContext';
 
 function ProjectUsers({ users, id }) {
   const [listUsers, setListUsers] = useState([]);
   const [open, setOpen] = useState(false);
   const [userIdToDelete, setUserIdToDelete] = useState(null);
-//   const navigate = useNavigate();
   const { api } = useApi();
-//   const { openSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleDelete = (userId) => {
     setUserIdToDelete(userId);
@@ -39,9 +39,9 @@ function ProjectUsers({ users, id }) {
       usuario_id: userIdToDelete,
     };
     api.patch('/eliminar_usuario_proyecto', data).then(() => {
-    //   navigate(0);
+      Router.reload();
     }).catch((error) => {
-    //   openSnackbar(error.message, 'error');
+      enqueueSnackbar(error.message, { variant: 'error' });
     });
   };
 

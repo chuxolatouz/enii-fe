@@ -13,6 +13,7 @@ import {
   DialogContent,
   DialogActions,
 } from '@mui/material';
+import Router from 'next/router';
 import { useApi } from 'contexts/AxiosContext';
 import { useSnackbar } from 'notistack';
 
@@ -21,7 +22,7 @@ function Acciones({ id }) {
   const [value, setValue] = useState(0);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-//   const navigate = useNavigate();
+
   const { api } = useApi();
   const { openSnackbar } = useSnackbar();
 
@@ -30,7 +31,7 @@ function Acciones({ id }) {
     const data = { project_id: id, balance: balanceParsed };
     api.patch('/asignar_balance', data).then(() => {
       handleClose();
-    //   navigate(0);
+      Router.reload();
     }).catch((error) => {
       openSnackbar(error.message, 'error');
     });

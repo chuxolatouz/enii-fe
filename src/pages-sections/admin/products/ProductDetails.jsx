@@ -16,12 +16,16 @@ import {
 import Verify from "components/icons/Verify";
 import TodoList from 'components/icons/duotone/TodoList';
 import { format } from "date-fns";
-import { FlexBetween, FlexBox } from "components/flex-box";
+import { FlexBox } from "components/flex-box";
 import { H3, H5, H6, Paragraph, Span } from "components/Typography";
 import ProductUsers from "pages-sections/admin/products/ProductUsers";
 import ProductMovements from "pages-sections/admin/products/ProductMovements";
 import ProductLogs from "pages-sections/admin/products/ProductLogs";
 import ProductBudget from "pages-sections/admin/products/ProductBudget";
+
+import AddFixedRules from "./actions/add/AddFixedRules";
+import AddRules from "./actions/add/AddRules";
+
 // ===================================================================
 
 const ProductDetails = ({ product }) => {
@@ -32,7 +36,7 @@ const ProductDetails = ({ product }) => {
         setValue(newValue);
 
     };
-    console.log(product)
+
   return (
     <Grid container spacing={3}>
         <Grid item md={3} xs={12}>
@@ -114,25 +118,37 @@ const ProductDetails = ({ product }) => {
                     my: 2,
                     }}
                 />
-                <FlexBox alignItems="left" gap={2}>
+                <FlexBox alignItems="left" gap={2} sx={{ height: '33px'}}>
                     {product.status?.completado?.includes(1) ? <Verify /> : <TodoList />}
                     <Span gap={4} color={product.status?.completado?.includes(1) ? 'green' : 'grey.600'}>Agregar Balance</Span>
                 </FlexBox>
-                <FlexBox alignItems="left" gap={2}>
+                <FlexBox alignItems="left" gap={2} sx={{ height: '33px'}}>
                     {product.status?.completado?.includes(2) ? <Verify /> : <TodoList />}
                     <Span gap={4} color={product.status?.completado?.includes(2) ? 'green' : 'grey.600'}>Usuarios</Span>
                 </FlexBox>
-                <FlexBox alignItems="left" gap={2}>
+                <FlexBox alignItems="left" gap={2} sx={{ height: '33px'}}>
                     {product.status?.completado?.includes(3) ? <Verify /> : <TodoList />}
                     <Span gap={4} color={product.status?.completado?.includes(3) ? 'green' : 'grey.600'}>Lider Proyecto</Span>
                 </FlexBox>
-                <FlexBox alignItems="left" gap={2}>
-                    {product.status?.completado?.includes(4) ? <Verify /> : <TodoList />}
-                    <Span gap={4} color={product.status?.completado?.includes(4) ? 'green' : 'grey.600'}>Reglas de Distribucion</Span>
+                <FlexBox alignItems="left" gap={2} sx={{ height: '33px'}}>
+                    {product.status?.completado?.includes(4) ? 
+                    <>
+                      <Verify /> 
+                      <Span gap={4} color={'green'}>Reglas de Distribucion</Span>
+                    </>
+                    :
+                    <AddRules />
+                    }
                 </FlexBox>
-                <FlexBox alignItems="left" gap={2}>
-                    {product.status?.completado?.includes(5) ? <Verify /> : <TodoList />}
-                    <Span gap={4} color={product.status?.completado?.includes(5) ? 'green' : 'grey.600'}>Reglas Fijas</Span>
+                <FlexBox alignItems="left" gap={2} sx={{ height: '33px'}}>
+                    {product.status?.completado?.includes(5) ? 
+                    <>
+                      <Verify /> 
+                      <Span gap={4} color={'green'}>Reglas Fijas</Span>
+                    </>
+                    :
+                    <AddFixedRules id={product._id} />
+                    }
                 </FlexBox>
                 <Divider
                     sx={{
