@@ -6,7 +6,6 @@ import { H3 } from "components/Typography";
 import { ProductDetails } from "pages-sections/admin";
 import VendorDashboardLayout from "components/layouts/vendor-dashboard";
 import { useApi } from "contexts/AxiosContext";
-// import api from "utils/__api__/products";
 
 // =============================================================================
 EditProduct.getLayout = function getLayout(page) {
@@ -14,26 +13,6 @@ EditProduct.getLayout = function getLayout(page) {
 };
 // =============================================================================
 
-// const INITIAL_VALUES = {
-//   name: "",
-//   tags: "",
-//   stock: "",
-//   price: 0,
-//   category: [],
-//   sale_price: "",
-//   description: "",
-// };
-
-// form field validation schema
-// const validationSchema = yup.object().shape({
-//   name: yup.string().required("required"),
-//   category: yup.array().min(1).required("required"),
-//   description: yup.string().required("required"),
-//   stock: yup.number().required("required"),
-//   price: yup.number().required("required"),
-//   sale_price: yup.number().required("required"),
-//   tags: yup.string().required("required"),
-// });
 export default function EditProduct() {
   const { query } = useRouter();
   const { slug } = query;
@@ -45,8 +24,8 @@ export default function EditProduct() {
     if(slug) {
       api.get(
         `/proyecto/${slug}`,
-        ).then((response) => {
-          console.log(response);
+        ).then((response) => {      
+          console.log(response)    
           setProduct(response.data);
         })
     }
@@ -57,8 +36,7 @@ export default function EditProduct() {
       <H3 mb={2}>{product.nombre}</H3>
         <ProductDetails
           product={product}
-          // validationSchema={validationSchema}
-          // handleFormSubmit={handleFormSubmit}
+          validationSchema={validationSchema}
         />
 
       

@@ -1,18 +1,39 @@
+import { useState, useEffect } from "react";
 import { Button, Card, Grid, MenuItem, TextField } from "@mui/material";
 import addDays from "date-fns/addDays";
 import parseISO from "date-fns/parseISO";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import enGB from 'date-fns/locale/en-GB';
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { Formik } from "formik";
+import { useApi } from "contexts/AxiosContext";
+import { useSnackbar } from "notistack";
 
 // ================================================================
 
 // ================================================================
 
 const ProductForm = (props) => {
-  const { initialValues, validationSchema, handleFormSubmit } = props;
+  const [categories, setCategories] = useState([]);
+  const { api } = useApi();
+  const { enqueueSnackbar } = useSnackbar();
+  const { initialValues, validationSchema, handleFormSubmit, reinitialize = false, shrink = false } = props;
 
+  useEffect(() => {
+    api.get('/mostrar_categorias')
+    .then((response) => {      
+      setCategories(response.data);
+    }).catch((error) => {    
+      console.log(error)        
+        if (error.response) {
+            enqueueSnackbar(error.response.data.message, { variant: 'error'})
+        } else {
+            enqueueSnackbar(error.message, { variant: 'error'})
+        }
+    })
+  }, [])
+  
   return (
     <Card
       sx={{
@@ -22,6 +43,7 @@ const ProductForm = (props) => {
       <Formik
         onSubmit={handleFormSubmit}
         initialValues={initialValues}
+        enableReinitialize={reinitialize}
         validationSchema={validationSchema}
       >
         {({
@@ -31,22 +53,26 @@ const ProductForm = (props) => {
           handleChange,
           handleBlur,
           handleSubmit,
+          setFieldValue,
         }) => (
           <form onSubmit={handleSubmit}>
             <Grid container spacing={3}>
               <Grid item sm={6} xs={12}>
                 <TextField
                   fullWidth
-                  name="name"
-                  label="Name"
+                  name="nombre"
+                  label="Nombre"
                   color="info"
                   size="medium"
-                  placeholder="Name"
-                  value={values.name}
+                  placeholder={shrink ? "Nombre" : ""}
+                  value={values.nombre}
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  error={!!touched.name && !!errors.name}
-                  helperText={touched.name && errors.name}
+                  error={!!touched.nombre && !!errors.nombre}
+                  helperText={touched.nombre && errors.nombre}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
                 />
               </Grid>
               <Grid item sm={6} xs={12}>
@@ -55,20 +81,18 @@ const ProductForm = (props) => {
                   fullWidth
                   color="info"
                   size="medium"
-                  name="category"
+                  name="categoria"
                   onBlur={handleBlur}
-                  placeholder="Category"
+                  placeholder="Categoria"
                   onChange={handleChange}
-                  value={values.category}
-                  label="Select Category"
-                  SelectProps={{
-                    multiple: true,
-                  }}
-                  error={!!touched.category && !!errors.category}
-                  helperText={touched.category && errors.category}
+                  value={values.categoria ? values.categoria : " "}
+                  label="Seleccionar Categoria"                  
+                  error={!!touched.categoria && !!errors.categoria}
+                  helperText={touched.categoria && errors.categoria}                  
                 >
-                  <MenuItem value="electronics">Electronics</MenuItem>
-                  <MenuItem value="fashion">Fashion</MenuItem>
+                  {categories.map((category) => (
+                    <MenuItem value={category.nombre}>{category.nombre}</MenuItem>
+                  ))}
                 </TextField>
               </Grid>
 
@@ -79,23 +103,26 @@ const ProductForm = (props) => {
                   fullWidth
                   color="info"
                   size="medium"
-                  name="description"
-                  label="Description"
+                  name="descripcion"
+                  label="Descripcion"
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  placeholder="Description"
-                  value={values.description}
-                  error={!!touched.description && !!errors.description}
-                  helperText={touched.description && errors.description}
+                  placeholder="Descripcion"
+                  value={values.descripcion}
+                  error={!!touched.descripcion && !!errors.descripcion}
+                  helperText={touched.descripcion && errors.descripcion}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
                 />
               </Grid>              
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={enGB}>
               <Grid item md={6} xs={12}>
 
                 <DatePicker
                   label="Fecha de Inicio"
                   // maxDate={new Date()}
-                  value={addDays(parseISO(values.date), 1)}
+                  value={addDays(parseISO(values.fecha_inicio), 1)}
                   onChange={(newValue) =>
                     setFieldValue("fecha_inicio", newValue)
                   }
@@ -109,7 +136,7 @@ const ProductForm = (props) => {
                       },
                       size: "medium",
                       fullWidth: true,
-                      value: values.date,
+                      value: values.fecha_inicio,
                       helperText: touched.fecha_inicio && errors.fecha_inicio,
                       error: Boolean(
                         !!touched.fecha_inicio && !!errors.fecha_inicio
@@ -122,9 +149,9 @@ const ProductForm = (props) => {
                   <DatePicker
                     label="Fecha Fin"
                     // maxDate={new Date()}
-                    value={addDays(parseISO(values.date), 1)}
+                    value={addDays(parseISO(values.fecha_fin), 1)}
                     onChange={(newValue) =>
-                      setFieldValue("fecha_inicio", newValue)
+                      setFieldValue("fecha_fin", newValue)
                     }
                     slots={{
                       textField: TextField,
@@ -136,10 +163,10 @@ const ProductForm = (props) => {
                         },
                         size: "medium",
                         fullWidth: true,
-                        value: values.date,
-                        helperText: touched.fecha_inicio && errors.fecha_inicio,
+                        value: values.fecha_fin,
+                        helperText: touched.fecha_fin && errors.fecha_fin,
                         error: Boolean(
-                          !!touched.fecha_inicio && !!errors.fecha_inicio
+                          !!touched.fecha_fin && !!errors.fecha_fin
                         ),
                       },
                     }}
@@ -150,7 +177,7 @@ const ProductForm = (props) => {
 
               <Grid item sm={6} xs={12}>
                 <Button variant="contained" color="info" type="submit">
-                  Crear
+                  {shrink ? "Actualizar": "Crear"}
                 </Button>
               </Grid>
             </Grid>

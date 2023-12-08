@@ -137,7 +137,7 @@ const ProductDetails = ({ product }) => {
                       <Span gap={4} color={'green'}>Reglas de Distribucion</Span>
                     </>
                     :
-                    <AddRules />
+                    <AddRules id={product._id}/>
                     }
                 </FlexBox>
                 <FlexBox alignItems="left" gap={2} sx={{ height: '33px'}}>

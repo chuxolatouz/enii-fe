@@ -62,51 +62,51 @@ function AddFixedRules({ id }) {
     }
     return (
         <Grid container alignItems="center" gap={2}>
-        <Grid item alignItems="center">
-          <TodoList sx={{verticalAlign: 'middle'}}/>
-        </Grid>
-        <Grid item>
-          <Button variant="text" onClick={handleOpen}>
-            <Typography fontSize="14px" color="grey.600">
-              Reglas Fijas
-            </Typography>
-          </Button>
-        </Grid>
-        <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Es momento de agregar una Refla Fija</DialogTitle>
-        <DialogContent>
-          <Box align="center" sx={{ paddingTop: '30px' }}>
-            <Box >
-              <FormControl variant="outlined" sx={{ m: 1, minWidth: 220 }}>
-                <InputLabel id="user-select-outlined-label">Reglas</InputLabel>
-                <Select
-                  id="user-select-standar"
-                  labelId="user-select-outlined-label"
-                  value={selectedRule}
-                  onChange={(event) => setSelectedRule(event.target.value)}
-                  label="Regla"
-                >
-                  {rules.map((user) => (
-                    <MenuItem key={user._id.$oid} value={user._id.$oid}>
-                      {user.nombre}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
+            <Grid item alignItems="center">
+                <TodoList sx={{verticalAlign: 'middle'}}/>
+            </Grid>
+            <Grid item>
+                <Button variant="text" onClick={handleOpen}>
+                    <Typography fontSize="14px" color="grey.600">
+                    Reglas Fijas
+                    </Typography>
+                </Button>
+            </Grid>
+            <Dialog open={open} onClose={handleClose}>
+            <DialogTitle>Es momento de agregar una Refla Fija</DialogTitle>
+            <DialogContent>
+            <Box align="center" sx={{ paddingTop: '30px' }}>
+                <Box >
+                <FormControl variant="outlined" sx={{ m: 1, minWidth: 220 }}>
+                    <InputLabel id="user-select-outlined-label">Reglas</InputLabel>
+                    <Select
+                    id="user-select-standar"
+                    labelId="user-select-outlined-label"
+                    value={selectedRule}
+                    onChange={(event) => setSelectedRule(event.target.value)}
+                    label="Regla"
+                    >
+                    {rules.map((user) => (
+                        <MenuItem key={user._id.$oid} value={user._id.$oid}>
+                        {user.nombre}
+                        </MenuItem>
+                    ))}
+                    </Select>
+                </FormControl>
+                </Box>
             </Box>
-          </Box>
-        </DialogContent>
-        <DialogActions sx={{ paddingBottom: '50px' }}>
-          <Box sx={{ position: 'absolute', bottom: '16px', right: '16px' }}>
-            <Button color="error" variant="outlined" onClick={handleClose}>
-              Cancelar
-            </Button>
-            <Button color="success" variant="outlined" onClick={handleAddRule}>
-              Agregar Regla
-            </Button>
-          </Box>
-        </DialogActions>
-      </Dialog>
+            </DialogContent>
+            <DialogActions sx={{ paddingBottom: '50px' }}>
+            <Box sx={{ position: 'absolute', bottom: '16px', right: '16px' }}>
+                <Button color="error" variant="outlined" onClick={handleClose}>
+                Cancelar
+                </Button>
+                <Button color="success" variant="outlined" onClick={handleAddRule}>
+                Agregar Regla
+                </Button>
+            </Box>
+            </DialogActions>
+        </Dialog>
       </Grid>
     )
 }

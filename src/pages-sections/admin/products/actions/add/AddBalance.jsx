@@ -61,6 +61,7 @@ function Acciones({ id }) {
               labelId="outlined-adornment-amount"
               startAdornment={<InputAdornment position="start">$</InputAdornment>}
               label="Monto"
+              fullWidth
               value={value}
               type="number"
               inputProps={{
