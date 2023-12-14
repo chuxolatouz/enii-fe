@@ -4,12 +4,13 @@ import { StyledIconButton } from "pages-sections/admin/StyledComponents";
 import ShowBudgets from "../actions/show/ShowBudgets";
 
 function BudgetActions({ budget }) {
+    console.log(budget)
     return (
         <Box>
-            <ShowBudgets budgets={budget.archivos}/>
-        <StyledIconButton>
+            <ShowBudgets budgets={budget}/>
+        { budget?.status !== "finished" && <StyledIconButton>
             <Delete />
-        </StyledIconButton>
+        </StyledIconButton>}
         </Box>
     )
 }

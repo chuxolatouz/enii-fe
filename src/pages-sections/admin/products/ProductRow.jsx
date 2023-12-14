@@ -19,23 +19,24 @@ import {
 
 const ProductRow = ({ product }) => {
   const [open, setOpen] = useState(false);
-  const { nombre, balance, fecha_inicio, fecha_fin, _id } = product;
+  const { nombre, balance, fecha_inicio, fecha_fin, _id, status } = product;
   const handleDelete = (userId) => {
-    setUserIdToDelete(userId);
     setOpen(true);
   };
 
+  
+
   const handleConfirmDelete = () => {
   
-    const data = {
-      proyecto_id: id,
-      usuario_id: userIdToDelete,
-    };
-    api.patch('/eliminar_usuario_proyecto', data).then(() => {
-    //   navigate(0);
-    }).catch((error) => {
-    //   openSnackbar(error.message, 'error');
-    });
+    // const data = {
+    //   proyecto_id: id,
+    //   usuario_id: userIdToDelete,
+    // };
+    // api.patch('/eliminar_usuario_proyecto', data).then(() => {
+    // //   navigate(0);
+    // }).catch((error) => {
+    // //   openSnackbar(error.message, 'error');
+    // });
   };
 
   const handleCancelDelete = () => {
@@ -101,16 +102,18 @@ const ProductRow = ({ product }) => {
           <Edit />
         </StyledIconButton>
 
-        <StyledIconButton>
-          <RemoveRedEye onClick={() => router.push(`/admin/products/${_id.$oid}`)}/>
+        <StyledIconButton 
+          onClick={() => router.push(`/admin/products/${_id.$oid}`)}
+        >
+          <RemoveRedEye />
         </StyledIconButton>
 
-        <StyledIconButton color="error">
-          <Delete  />
-        </StyledIconButton>
+        { !status?.completado?.includes(1) && <StyledIconButton onClick={handleDelete} color="error">
+          <Delete  color="error"/>
+        </StyledIconButton>}
       </StyledTableCell>
       <Dialog open={open} onClose={handleCancelDelete}>
-        <DialogTitle>¿Estás seguro de que quieres eliminar este usuario?</DialogTitle>
+        <DialogTitle>¿Estás seguro de que quieres eliminar este Proyecto?</DialogTitle>
         <DialogActions>
           <Button color="error" onClick={handleCancelDelete}>Cancelar</Button>
           <Button color="secondary" onClick={handleConfirmDelete}>Eliminar</Button>

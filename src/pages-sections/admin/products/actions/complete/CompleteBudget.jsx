@@ -1,44 +1,51 @@
-import React from 'react';
+import { useState } from "react";
 import {
-    Dialog, 
-    DialogContent, 
-    DialogActions, 
+    Dialog,
+    DialogContent,
+    DialogActions,
     DialogTitle,
+    Tooltip,
     Button,
-    OutlinedInput,
+    Chip,
     InputLabel,
+    OutlinedInput,
     Box,
-    FormControl,
+    FormControl
 } from '@mui/material';
 import DropZone from 'components/DropZone';
-import { H3 } from 'components/Typography';
 import { useApi } from 'contexts/AxiosContext';
 import { useSnackbar } from 'notistack';
 
-function AddBudget({ id }) {
-  const [isOpen, setIsOpen] = React.useState(false);
-  const [text, setText] = React.useState('');
-  const [amount, setAmount] = React.useState(0);
-  const [files, setFiles] = React.useState([]);
+function CerrarDocumento({ budget }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [text, setText] = useState('');
+  const [amount, setAmount] = useState(0);
+  const [files, setFiles] = useState([]);
   const { api } = useApi();
-
+//   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
-
-
+  const handleClickStatus = () => {
+    if (budget.status !== 'finished') {
+      setIsOpen(true);
+    }
+  };
   const handleCrearDoc = () => {
+
     const formData = new FormData();
     formData.append('descripcion', text);
     files.forEach((file) => {
       formData.append('files', file);
     });
-    formData.append('proyecto_id', id);
+    formData.append('proyecto_id', budget.project_id.$oid);
     formData.append('monto', amount);
+    formData.append('doc_id', budget._id.$oid);
+    formData.append('description', budget.descripcion)
 
-    api.post('/documento_crear', formData).then((response) => {
+    api.post('/documento_cerrar', formData).then((response) => {
       setIsOpen(false);
-      enqueueSnackbar(response.data.mensaje, {variant: 'success'});
+      enqueueSnackbar(response.data.message, {variant: 'success' });
     }).catch((error) => {
-      enqueueSnackbar(error.message, {variant: 'error'});
+      enqueueSnackbar(error.data.message, {variant: 'error' });
     });
   };
 
@@ -47,14 +54,14 @@ function AddBudget({ id }) {
       {`${file.path}-${file.size}bytes`}
     </Box>
   ));
-
+    console.log(budget)
   return (
     <Box>
-      <Button variant="outlined" color="secondary" onClick={() => setIsOpen(true)}>
-        Subir presupuestos
-      </Button>
+      <Tooltip title={status}>
+      <Chip color="primary" onClick={handleClickStatus} clickable variant="outlined" label="Asignar Monto"/>
+      </Tooltip>
       <Dialog open={isOpen}>
-        <DialogTitle><H3>Agrega un proceso de Documentacion</H3></DialogTitle>
+        <DialogTitle>Agrega la factura de {budget.descripcion}</DialogTitle>
         <DialogContent>
           <FormControl fullWidth variant="outlined" sx={{ marginTop: '20px', marginBottom: '20px' }}>
             <InputLabel id="documentos">Descripcion</InputLabel>
@@ -65,7 +72,7 @@ function AddBudget({ id }) {
               onChange={(e) => setText(e.target.value)}
             />
           </FormControl>
-          <FormControl fullWidth variant="outlined" sx={{ marginTop: '20px', marginBottom: '20px' }}>
+          <FormControl fullWidth type="number" variant="outlined" sx={{ marginTop: '20px', marginBottom: '20px' }}>
             <InputLabel id="monto">Monto</InputLabel>
             <OutlinedInput
               labelId="monto"
@@ -74,7 +81,6 @@ function AddBudget({ id }) {
               onChange={(e) => setAmount(e.target.value)}
             />
           </FormControl>
-
           <DropZone onChange={(file) => { setFiles(file)}} />
           <aside>
             <h4>Files</h4>
@@ -86,7 +92,7 @@ function AddBudget({ id }) {
             Cancelar
           </Button>
           <Button variant="outlined" color="secondary" onClick={handleCrearDoc}>
-            Subir Presupuestos
+            Cerrar Presupuestos
           </Button>
         </DialogActions>
       </Dialog>
@@ -94,4 +100,4 @@ function AddBudget({ id }) {
   );
 }
 
-export default AddBudget;
+export default CerrarDocumento;

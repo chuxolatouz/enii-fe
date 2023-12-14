@@ -22,6 +22,8 @@ const DropZone = ({
     multiple: true,
     accept: {
       "image/*": [".png", ".gif", ".jpeg", ".jpg"],
+      "application/pdf": [".pdf"]
+
     },
   });
   return (

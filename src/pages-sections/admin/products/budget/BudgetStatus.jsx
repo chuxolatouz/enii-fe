@@ -1,10 +1,11 @@
 import { Chip } from '@mui/material';
+import CompleteBudget from 'pages-sections/admin/products/actions/complete/CompleteBudget';
 
 function BudgetStatus({budget}) {
     const { status } = budget;
     return ( status  === "finished" ? 
                     <Chip color="success" variant="outlined" label="completado"/> : 
-                    <Chip color="primary" clickable variant="outlined" label="Asignar Monto"/>
+                    <CompleteBudget budget={budget}/>
     )
 }
 

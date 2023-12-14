@@ -38,7 +38,7 @@ function Documentos({ id }) {
         enqueueSnackbar(error.message, { variant: 'error' });
       });
   }, [pagination]);
-  console.log(documentos)
+
   return (
     <Box>
       <AddBudget id={id} />

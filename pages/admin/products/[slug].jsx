@@ -24,8 +24,7 @@ export default function EditProduct() {
     if(slug) {
       api.get(
         `/proyecto/${slug}`,
-        ).then((response) => {      
-          console.log(response)    
+        ).then((response) => {    
           setProduct(response.data);
         })
     }
@@ -36,7 +35,6 @@ export default function EditProduct() {
       <H3 mb={2}>{product.nombre}</H3>
         <ProductDetails
           product={product}
-          validationSchema={validationSchema}
         />
 
       
