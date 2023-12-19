@@ -25,7 +25,6 @@ export default function ShowDocument({ budgets }) {
   const handleDownload = (ruta) => {
     window.open(ruta, '_blank');
   };
-  console.log(budgets);
   return (
     <>
       <StyledIconButton onClick={() => setIsOpen(true)}>

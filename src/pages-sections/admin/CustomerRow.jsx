@@ -14,6 +14,9 @@ import {
   StyledTableCell,
   StyledTableRow,
 } from "./StyledComponents";
+import { useSnackbar } from 'notistack';
+import { useApi } from 'contexts/AxiosContext'
+import Router from 'next/router';
 
 
 // ========================================================================
@@ -23,6 +26,8 @@ import {
 const CustomerRow = ({ customer }) => {
   const { email, nombre, avatar } = customer;
   const [open, setOpen] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
+  const { api } = useApi();
 
   const handleDelete = (userId) => {
     // setUserIdToDelete(userId);
@@ -32,12 +37,17 @@ const CustomerRow = ({ customer }) => {
   const handleConfirmDelete = () => {
   // Elimina el usuario con el ID `userIdToDelete` y cierra el cuadro de diálogo.
     const data = {
-      usuario_id: userIdToDelete,
+      id_usuario: customer._id.$oid,
     };
-    api.patch('/eliminar_usuario_proyecto', data).then(() => {
-    //   navigate(0);
+    api.post('/eliminar_usuario', data).then((response) => {
+      enqueueSnackbar(response.data.message, { variant: 'success'})
+      Router.reload();
     }).catch((error) => {
-    //   openSnackbar(error.message, 'error');
+      if (error.response) {
+        enqueueSnackbar(error.response.data.message, { variant: 'error'})
+      } else {
+          enqueueSnackbar(error.message, { variant: 'error'})
+      }
     });
   };
 
@@ -45,6 +55,7 @@ const CustomerRow = ({ customer }) => {
   // Cierra el cuadro de diálogo de confirmación.
     setOpen(false);
   };
+  console.log(customer)
   return (
     <StyledTableRow tabIndex={-1} role="checkbox">
       <StyledTableCell align="left">

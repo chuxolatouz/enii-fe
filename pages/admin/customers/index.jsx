@@ -105,7 +105,7 @@ export default function CustomerList() {
 
               <TableBody>
                 { data.map((customer) => (
-                  <CustomerRow customer={customer} key={customer.id} />
+                  <CustomerRow customer={customer} key={customer._id.$oid} />
                 ))}
               </TableBody>
             </Table>
