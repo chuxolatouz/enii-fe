@@ -45,8 +45,12 @@ function CerrarDocumento({ budget }) {
       setIsOpen(false);
       enqueueSnackbar(response.data.message, {variant: 'success' });
     }).catch((error) => {
-      enqueueSnackbar(error.data.message, {variant: 'error' });
-    });
+      if (error.response) {
+          enqueueSnackbar(error.response.data.message, { variant: 'error'})
+      } else {
+          enqueueSnackbar(error.message, { variant: 'error'})
+      }
+  })
   };
 
   const fileList = files.map((file) => (

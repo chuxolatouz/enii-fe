@@ -39,8 +39,12 @@ function Movimientos({ id }) {
     setCount(response.data.count);
   })
   .catch((error) => {
-    enqueueSnackbar(error.message, 'error');
-  });
+    if (error.response) {
+        enqueueSnackbar(error.response.data.message, { variant: 'error'})
+    } else {
+        enqueueSnackbar(error.message, { variant: 'error'})
+    }
+})
 
   useEffect(() => {
     fetchBalance();

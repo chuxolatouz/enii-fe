@@ -33,8 +33,12 @@ function Acciones({ id }) {
       handleClose();
       fetchBalance
     }).catch((error) => {
-      enqueueSnackbar(error.message, 'error');
-    });
+      if (error.response) {
+          enqueueSnackbar(error.response.data.message, { variant: 'error'})
+      } else {
+          enqueueSnackbar(error.message, { variant: 'error'})
+      }
+  })
   };
   const formatText = (float) => {
     // Si el valor ingresado coincide con el patrón permitido, actualiza el estado text

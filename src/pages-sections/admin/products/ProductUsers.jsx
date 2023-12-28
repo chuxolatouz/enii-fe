@@ -41,8 +41,12 @@ function ProjectUsers({ users, id }) {
     api.patch('/eliminar_usuario_proyecto', data).then(() => {
       Router.reload();
     }).catch((error) => {
-      enqueueSnackbar(error.message, { variant: 'error' });
-    });
+      if (error.response) {
+          enqueueSnackbar(error.response.data.message, { variant: 'error'})
+      } else {
+          enqueueSnackbar(error.message, { variant: 'error'})
+      }
+  })
   };
 
   const handleCancelDelete = () => {

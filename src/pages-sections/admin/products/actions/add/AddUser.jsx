@@ -45,21 +45,33 @@ function AsignarMiembro({ id }) {
     api.patch('asignar_usuario_proyecto', data).then(() => {
       Router.reload();
     }).catch((error) => {
-      enqueueSnackbar(error.message, { variant: 'error' });
-    });
+      if (error.response) {
+          enqueueSnackbar(error.response.data.message, { variant: 'error'})
+      } else {
+          enqueueSnackbar(error.message, { variant: 'error'})
+      }
+  })
   };
 
   useEffect(() => {
     api.get('/roles').then((response) => {
       setRoles(response.data);
     }).catch((error) => {
-      enqueueSnackbar(error.message, { variant: 'error' });
-    });
+      if (error.response) {
+          enqueueSnackbar(error.response.data.message, { variant: 'error'})
+      } else {
+          enqueueSnackbar(error.message, { variant: 'error'})
+      }
+  })
     api.get('/mostrar_usuarios').then((response) => {
       setUsers(response.data.request_list);
     }).catch((error) => {
-      enqueueSnackbar(error.message, { variant: 'error' });
-    });
+      if (error.response) {
+          enqueueSnackbar(error.response.data.message, { variant: 'error'})
+      } else {
+          enqueueSnackbar(error.message, { variant: 'error'})
+      }
+  })
   }, []);
 
   return (
