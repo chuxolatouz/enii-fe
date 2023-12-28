@@ -8,6 +8,7 @@ import TablePagination from "components/data-table/TablePagination";
 import VendorDashboardLayout from "components/layouts/vendor-dashboard";
 import { CustomerRow } from "pages-sections/admin";
 import { useApi } from 'contexts/AxiosContext';
+import { useSnackbar } from 'notistack';
 
 // table column list
 const tableHeading = [
@@ -44,16 +45,24 @@ export default function CustomerList() {
     page: 0,
     limit: 10
   });
-  // const [toast, setToast] = useState({ open: false, error: false });
+  const { enqueueSnackbar } = useSnackbar();
+
   const { api } = useApi();
+  const fetchUsers = () => api.get(
+    `/mostrar_usuarios?page=${pagination.page}`,
+  ).then((respon) => {
+    setTotalCount(pagination.total);
+    setData(respon.data.request_list);
+  }).catch((error) => {
+    if (error.response) {
+        enqueueSnackbar(error.response.data.message, { variant: 'error'})
+    } else {
+        enqueueSnackbar(error.message, { variant: 'error'})
+    }
+});
 
   useEffect(() => {
-    api.get(
-      `/mostrar_usuarios?page=${pagination.page}`,
-    ).then((respon) => {
-      setTotalCount(pagination.total);
-      setData(respon.data.request_list);
-    });
+    fetchUsers()
   }, [pagination])
 
   const handleChangePage = (_, page) => {
@@ -73,18 +82,6 @@ export default function CustomerList() {
       limit: newLimit
     }));
   };
-
-  // const {
-  //   order,
-  //   orderBy,
-  //   selected,
-  //   rowsPerPage,
-  //   filteredList,
-  //   handleChangePage,
-  //   handleRequestSort,
-  // } = useMuiTable({
-  //   listData: customers,
-  // });
 
   return (
     <Box py={4}>

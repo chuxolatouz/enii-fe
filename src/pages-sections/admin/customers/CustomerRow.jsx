@@ -13,7 +13,7 @@ import {
   StyledIconButton,
   StyledTableCell,
   StyledTableRow,
-} from "./StyledComponents";
+} from "../StyledComponents";
 import { useSnackbar } from 'notistack';
 import { useApi } from 'contexts/AxiosContext'
 import Router from 'next/router';

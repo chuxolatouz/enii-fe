@@ -24,16 +24,16 @@ function Acciones({ id }) {
   const handleClose = () => setOpen(false);
 
   const { api } = useApi();
-  const { openSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
 
-  const handleAgregarBalance = () => {
+  const handleAgregarBalance = ({ fetchBalance }) => {
     const balanceParsed = parseFloat(value).toFixed(2);
     const data = { project_id: id, balance: balanceParsed };
     api.patch('/asignar_balance', data).then(() => {
       handleClose();
-      Router.reload();
+      fetchBalance
     }).catch((error) => {
-      openSnackbar(error.message, 'error');
+      enqueueSnackbar(error.message, 'error');
     });
   };
   const formatText = (float) => {

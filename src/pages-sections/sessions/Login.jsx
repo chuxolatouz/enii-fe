@@ -57,8 +57,12 @@ const Login = () => {
       localStorage.setItem('token', response.data.token);
       window.location.href = '/admin/products';
     }).catch((error) => {
-      enqueueSnackbar(error.response.data.message, { variant: "error" })
-    })
+      if (error.response) {
+          enqueueSnackbar(error.response.data.message, { variant: 'error'})
+      } else {
+          enqueueSnackbar(error.message, { variant: 'error'})
+      }
+  })
 
   };
 

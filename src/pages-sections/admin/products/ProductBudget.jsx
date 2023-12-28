@@ -35,8 +35,12 @@ function Documentos({ id }) {
         setDocumentos(response.data.request_list);
         setCount(response.data.count);
       }).catch((error) => {
-        enqueueSnackbar(error.message, { variant: 'error' });
-      });
+        if (error.response) {
+            enqueueSnackbar(error.response.data.message, { variant: 'error'})
+        } else {
+            enqueueSnackbar(error.message, { variant: 'error'})
+        }
+    })
   }, [pagination]);
 
   return (

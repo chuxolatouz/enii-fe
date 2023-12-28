@@ -64,9 +64,12 @@ export default function RequestList() {
       setTotalCount(pagination.total);
       setRules(respon.data.request_list);
     }).catch((error) => {
-        console.log(error)
-        enqueueSnackbar(error.message, { variant: "error" })
-    });
+      if (error.response) {
+          enqueueSnackbar(error.response.data.message, { variant: 'error'})
+      } else {
+          enqueueSnackbar(error.message, { variant: 'error'})
+      }
+  })
   }, [pagination])
 
   const handleChangePage = (_, page) => {

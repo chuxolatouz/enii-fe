@@ -25,14 +25,14 @@ const tableHeading = [
     label: "Fecha Fin",
     align: "left",
   },
-  // {
-  //   id: "categoria",
-  //   label: "Categoria",
-  //   align: "left",
-  // },
   {
     id: "balance",
     label: "Balance",
+    align: "left",
+  },
+  {
+    id: "status",
+    label: "Status",
     align: "left",
   },
   {
@@ -60,14 +60,16 @@ export default function ProductList() {
   });
 
   const { api } = useApi();
+  
+  const fetchProducts = () => api.get(
+    `/mostrar_proyectos?page=${pagination.page}`,
+  ).then((respon) => {
+    setTotalCount(pagination.total);
+    setProjects(respon.data.request_list);
+  });
 
   useEffect(() => {
-    api.get(
-      `/mostrar_proyectos?page=${pagination.page}`,
-    ).then((respon) => {
-      setTotalCount(pagination.total);
-      setProjects(respon.data.request_list);
-    });
+    fetchProducts()
   }, [pagination])
 
   const handleChangePage = (_, page) => {
@@ -106,7 +108,7 @@ export default function ProductList() {
 
               <TableBody>
                 {projects.map((product, index) => (
-                  <ProductRow product={product} key={index} />
+                  <ProductRow product={product} key={index} fetchProducts={fetchProducts}/>
                 ))}
               </TableBody>
             </Table>

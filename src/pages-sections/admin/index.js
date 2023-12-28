@@ -1,5 +1,6 @@
 import ReviewRow from "./ReviewRow";
-import CustomerRow from "./CustomerRow";
+import CustomerRow from "./customers/CustomerRow";
+import CustomerForm from "./customers/CustomerForm";
 import RefundRequestRow from "./RefundRequestRow";
 import BrandRow from "./brand/BrandRow";
 import BrandForm from "./brand/BrandForm";
@@ -29,6 +30,7 @@ export {
   SellerRow,
   ProductRow,
   CustomerRow,
+  CustomerForm,
   CategoryRow,
   ProductForm,
   ProductDetails,

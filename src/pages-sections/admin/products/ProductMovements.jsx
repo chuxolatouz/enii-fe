@@ -32,21 +32,23 @@ function Movimientos({ id }) {
     return <span style={{ color: '#d32f2f', fontStyle: 'bold' }}>{monto}</span>;
   };
 
+  const fetchBalance = () => api
+  .get(`/proyecto/${id}/acciones?page=${pagination - 1}`)
+  .then((response) => {
+    setActions(response.data.request_list);
+    setCount(response.data.count);
+  })
+  .catch((error) => {
+    enqueueSnackbar(error.message, 'error');
+  });
+
   useEffect(() => {
-    api
-      .get(`/proyecto/${id}/acciones?page=${pagination - 1}`)
-      .then((response) => {
-        setActions(response.data.request_list);
-        setCount(response.data.count);
-      })
-      .catch((error) => {
-        enqueueSnackbar(error.message, 'error');
-      });
+    fetchBalance();
   }, [pagination]);
 
   return (
     <Box>
-      <AddBalance id={id} />
+      <AddBalance id={id} fetchBalance={fetchBalance} />
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
           <TableHead>

@@ -1,12 +1,12 @@
 import { Box } from "@mui/material";
 import * as yup from "yup";
-import { H3 } from "components/Typography";
-import { RequestForm } from "pages-sections/admin";
-import { useApi } from "contexts/AxiosContext";
 import { useRouter } from "next/router";
+import { H3 } from "components/Typography";
 import { useSnackbar } from "notistack";
-
+import { CustomerForm } from "pages-sections/admin";
 import VendorDashboardLayout from "components/layouts/vendor-dashboard";
+import { useApi } from "contexts/AxiosContext";
+
 
 // =============================================================================
 CreateProduct.getLayout = function getLayout(page) {
@@ -15,19 +15,27 @@ CreateProduct.getLayout = function getLayout(page) {
 // =============================================================================
 
 export default function CreateProduct() {
-  const { api } = useApi();
-  const { push } = useRouter();
-  const { enqueueSnackbar } = useSnackbar();
+  const INITIAL_VALUES = {
+    nombre: "",
+    email: "",
+    password: ""
+  };
   const validationSchema = yup.object().shape({
-    name: yup.string().required("required"),
-    items: yup.array().min(1).required("required"),
+  nombre: yup.string().required("required"),
+  email: yup.string().email().required("required"),
+  password: yup.string().required("required"),
+    
   });
+  const { api } = useApi();
+  const { enqueueSnackbar } = useSnackbar();
+  const router= useRouter();
+  
+
   const handleFormSubmit = (values) => {
-    api.post(
-      '/crear_solicitud_regla_fija',
-      values
-      ).then(() => {
-        push('/admin/request');
+    console.log(values)
+    api.post('/registrar', values)
+      .then((response) => {
+        router.push("/admin/customers/");
       })
       .catch((error) => {
         if (error.response) {
@@ -36,12 +44,14 @@ export default function CreateProduct() {
             enqueueSnackbar(error.message, { variant: 'error'})
         }
     })
+
   };
   return (
     <Box py={4}>
-      <H3 mb={2}>Crear Solicitud de Regla</H3>
+      <H3 mb={2}>Crear un nuevo usuario</H3>
 
-      <RequestForm
+      <CustomerForm
+        initialValues={INITIAL_VALUES}
         validationSchema={validationSchema}
         handleFormSubmit={handleFormSubmit}
       />

@@ -1,50 +1,30 @@
-import { useState } from "react"; 
 import { useRouter } from "next/router";
-import { Delete, Edit, RemoveRedEye } from "@mui/icons-material";
-import { Box, Dialog, DialogTitle, DialogActions, Button } from "@mui/material";
+import { Edit, RemoveRedEye } from "@mui/icons-material";
+import { Box } from "@mui/material";
 import { FlexBox } from "components/flex-box";
 import { Paragraph } from "components/Typography";
 import { currency } from "lib";
 import { format } from "date-fns";
 import {
   StyledTableRow,
-  CategoryWrapper,
   StyledTableCell,
   StyledIconButton,
 } from "../StyledComponents";
 
-// ========================================================================
+import DeleteProduct from 'pages-sections/admin/products/actions/delete/DeleteProduct';
+
+import CircularProgress from "components/circular-progress/CircularProgress";
 
 // ========================================================================
 
-const ProductRow = ({ product }) => {
-  const [open, setOpen] = useState(false);
+// ========================================================================
+
+const ProductRow = ({ product, fetchProducts }) => {
+  
   const { nombre, balance, fecha_inicio, fecha_fin, _id, status } = product;
-  const handleDelete = (userId) => {
-    setOpen(true);
-  };
 
-  
-
-  const handleConfirmDelete = () => {
-  
-    // const data = {
-    //   proyecto_id: id,
-    //   usuario_id: userIdToDelete,
-    // };
-    // api.patch('/eliminar_usuario_proyecto', data).then(() => {
-    // //   navigate(0);
-    // }).catch((error) => {
-    // //   openSnackbar(error.message, 'error');
-    // });
-  };
-
-  const handleCancelDelete = () => {
-  // Cierra el cuadro de diálogo de confirmación.
-    setOpen(false);
-  };
   const router = useRouter();
-  // const [productPulish, setProductPublish] = useState(published);
+
   return (
     <StyledTableRow tabIndex={-1} role="checkbox">
       <StyledTableCell align="left">
@@ -68,11 +48,6 @@ const ProductRow = ({ product }) => {
         <Paragraph>{format(new Date(fecha_fin), "dd/MM/yyyy")}</Paragraph>
       </StyledTableCell>
 
-      {/* <StyledTableCell align="left">
-        {categorias.map((categoria) => {
-          <CategoryWrapper>{categoria.value}</CategoryWrapper>
-        })}
-      </StyledTableCell> */}
 
       {/* <StyledTableCell align="left">
         <Avatar
@@ -95,6 +70,10 @@ const ProductRow = ({ product }) => {
         />
       </StyledTableCell> */}
 
+      <StyledTableCell align="left">
+        <CircularProgress status={status} />
+      </StyledTableCell>
+
       <StyledTableCell align="center">
         <StyledIconButton
           onClick={() => router.push(`/admin/products/edit/${_id.$oid}`)}
@@ -108,17 +87,9 @@ const ProductRow = ({ product }) => {
           <RemoveRedEye />
         </StyledIconButton>
 
-        { !status?.completado?.includes(1) && <StyledIconButton onClick={handleDelete} color="error">
-          <Delete  color="error"/>
-        </StyledIconButton>}
+        <DeleteProduct product={product} fetchProducts={fetchProducts} />
       </StyledTableCell>
-      <Dialog open={open} onClose={handleCancelDelete}>
-        <DialogTitle>¿Estás seguro de que quieres eliminar este Proyecto?</DialogTitle>
-        <DialogActions>
-          <Button color="error" onClick={handleCancelDelete}>Cancelar</Button>
-          <Button color="secondary" onClick={handleConfirmDelete}>Eliminar</Button>
-        </DialogActions>
-      </Dialog>
+      
     </StyledTableRow>
   );
 };

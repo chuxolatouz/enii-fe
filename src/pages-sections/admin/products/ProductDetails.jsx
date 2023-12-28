@@ -3,7 +3,6 @@ import {
   Box,
   Card,
   Grid,
-  Button,
   Divider,
   Chip,
   Tab
@@ -25,6 +24,7 @@ import ProductBudget from "pages-sections/admin/products/ProductBudget";
 
 import AddFixedRules from "./actions/add/AddFixedRules";
 import AddRules from "./actions/add/AddRules";
+import FinishProject from "./actions/complete/FinishProject";
 
 // ===================================================================
 
@@ -155,7 +155,7 @@ const ProductDetails = ({ product }) => {
                     my: 2,
                     }}
                 />
-                <Button> Finalizar Proyecto</Button>
+                {!product.status?.finished && (<FlexBox alignItems="center" gap={2}><FinishProject project={product} /></FlexBox>)}
             </Card>
         </Grid>
         <Grid item md={9} xs={12}>

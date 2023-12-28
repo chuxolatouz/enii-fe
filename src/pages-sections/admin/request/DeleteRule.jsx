@@ -30,9 +30,12 @@ const DeleteRule = ({ id }) => {
             .then(() => {
                 Router.reload();
             }).catch((error) => {
-                console.log(error)
-                enqueueSnackbar(error.message, { variant: "error" })
-            });
+                if (error.response) {
+                    enqueueSnackbar(error.response.data.message, { variant: 'error'})
+                } else {
+                    enqueueSnackbar(error.message, { variant: 'error'})
+                }
+            })
     }
     return(
         <>

@@ -14,7 +14,7 @@ import {
   Pagination,
 } from '@mui/material';
 import { useApi } from 'contexts/AxiosContext';
-// import { useSnackbar } from '../../contexts/SnackbarContext';
+import { useSnackbar } from 'notistack';
 
 
 function Logs({ id }) {
@@ -23,7 +23,7 @@ function Logs({ id }) {
   const [actions, setActions] = useState([]);
   const [count, setCount] = useState(0);
   const { api } = useApi();
-//   const { openSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
 
   const handlePagination = (_, value) => {
     setPagination(value);
@@ -37,8 +37,12 @@ function Logs({ id }) {
         setCount(response.data.count);
       })
       .catch((error) => {
-        openSnackbar(error.message, 'error');
-      });
+        if (error.response) {
+            enqueueSnackbar(error.response.data.message, { variant: 'error'})
+        } else {
+            enqueueSnackbar(error.message, { variant: 'error'})
+        }
+    })
   }, [pagination]);
   console.log(id, actions)
   return (
