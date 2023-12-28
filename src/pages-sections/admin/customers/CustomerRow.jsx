@@ -23,14 +23,13 @@ import Router from 'next/router';
 
 // ========================================================================
 
-const CustomerRow = ({ customer }) => {
+const CustomerRow = ({ customer, fetchUsers }) => {
   const { email, nombre, avatar } = customer;
   const [open, setOpen] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const { api } = useApi();
 
-  const handleDelete = (userId) => {
-    // setUserIdToDelete(userId);
+  const handleDelete = () => {
     setOpen(true);
   };
 
@@ -41,7 +40,8 @@ const CustomerRow = ({ customer }) => {
     };
     api.post('/eliminar_usuario', data).then((response) => {
       enqueueSnackbar(response.data.message, { variant: 'success'})
-      Router.reload();
+      handleCancelDelete();
+      fetchUsers();
     }).catch((error) => {
       if (error.response) {
         enqueueSnackbar(error.response.data.message, { variant: 'error'})
