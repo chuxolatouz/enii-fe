@@ -70,7 +70,7 @@ function ProjectUsers({ users, id }) {
   }, [id]);
 
   return (
-    <Box>
+    <div>
       <AddUser id={id} />
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
@@ -108,7 +108,7 @@ function ProjectUsers({ users, id }) {
           <Button color="secondary" onClick={handleConfirmDelete}>Eliminar</Button>
         </DialogActions>
       </Dialog>
-    </Box>
+    </div>
   );
 }
 

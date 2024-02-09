@@ -57,19 +57,21 @@ export default function RequestList() {
 
   const { api } = useApi();
   const { enqueueSnackbar } = useSnackbar();
-  useEffect(() => {
-    api.get(
-      `/mostrar_solicitudes?page=${pagination.page}`,
-    ).then((respon) => {
-      setTotalCount(pagination.total);
-      setRules(respon.data.request_list);
-    }).catch((error) => {
-      if (error.response) {
-          enqueueSnackbar(error.response.data.message, { variant: 'error'})
-      } else {
-          enqueueSnackbar(error.message, { variant: 'error'})
-      }
+  const fetchRequest = () => api.get(
+    `/mostrar_solicitudes?page=${pagination.page}`,
+  ).then((respon) => {
+    setTotalCount(pagination.total);
+    setRules(respon.data.request_list);
+  }).catch((error) => {
+    if (error.response) {
+        enqueueSnackbar(error.response.data.message, { variant: 'error'})
+    } else {
+        enqueueSnackbar(error.message, { variant: 'error'})
+    }
   })
+
+  useEffect(() => {
+    fetchRequest();
   }, [pagination])
 
   const handleChangePage = (_, page) => {
@@ -108,7 +110,7 @@ export default function RequestList() {
 
               <TableBody>
                 {rules.map((rules, index) => (
-                  <RequestRow request={rules} key={index} />
+                  <RequestRow request={rules} key={index} fetchRequest={fetchRequest} />
                 ))}
               </TableBody>
             </Table>

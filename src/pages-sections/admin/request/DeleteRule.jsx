@@ -10,11 +10,10 @@ import {
     StyledIconButton,
 } from "../StyledComponents";
 import { useApi } from "contexts/AxiosContext";
-import Router from "next/router";
 import { useSnackbar } from "notistack";
 
 
-const DeleteRule = ({ id }) => {
+const DeleteRule = ({ id, fetchRequest }) => {
     const [open, setOpen] = useState(false);
     const { api } = useApi();
     const { enqueueSnackbar } = useSnackbar();
@@ -25,10 +24,10 @@ const DeleteRule = ({ id }) => {
         setOpen(false);
     }
     const handleCancel = () => {
-        console.log(id)
         api.post(`/eliminar_solicitud_regla_fija/${id.$oid}`)
-            .then(() => {
-                Router.reload();
+            .then((response) => {
+                enqueueSnackbar(response.data.message, { variant: "success" })
+                fetchRequest();
             }).catch((error) => {
                 if (error.response) {
                     enqueueSnackbar(error.response.data.message, { variant: 'error'})

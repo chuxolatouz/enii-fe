@@ -1,9 +1,9 @@
-import * as React from 'react';
 import PropTypes from 'prop-types';
-import CircularProgress from '@mui/material/CircularProgress';
+import { CircularProgress } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Verify from "components/icons/Verify";
+import CreditCardVerified from "components/icons/CreditCardVerified";
 
 function CircularProgressWithLabel(props) {
   return (
@@ -48,7 +48,12 @@ export default function CircularWithValueLabel({ status }) {
         return <Verify sx={{ marginLeft: 1 }} />
     } else {
         const progress = calculateProgress()
-        return <CircularProgressWithLabel color={progress === 100 ? "success" : "secondary"} value={progress} />;
+
+        if (progress === 100) {
+          return <CreditCardVerified sx={{ marginLeft: 1 }} color="success" />
+        } else {
+          return <CircularProgressWithLabel color={progress === 100 ? "success" : "secondary"} value={progress} />;
+        }
     }
 
 }

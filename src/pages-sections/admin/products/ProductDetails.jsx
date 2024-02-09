@@ -25,6 +25,8 @@ import ProductBudget from "pages-sections/admin/products/ProductBudget";
 import AddFixedRules from "./actions/add/AddFixedRules";
 import AddRules from "./actions/add/AddRules";
 import FinishProject from "./actions/complete/FinishProject";
+import DownloadStartPDF from './actions/complete/DownloadStartPDF';
+import DownloadEndPDF from './actions/complete/DownloadEndPDF';
 
 // ===================================================================
 
@@ -152,10 +154,25 @@ const ProductDetails = ({ product }) => {
                 </FlexBox>
                 <Divider
                     sx={{
-                    my: 2,
+                      my: 2,
                     }}
-                />
+                    />
+                {product.status?.completado.length === 5 && (
+                  <FlexBox alignItems="center" gap={2}>
+                    <DownloadStartPDF project={product} />
+                  </FlexBox>
+                )}
+                {product.status?.completado.length === 5 && (
+                <Divider
+                    sx={{
+                      my: 2,
+                    }}
+                    /> 
+                  )}
                 {!product.status?.finished && (<FlexBox alignItems="center" gap={2}><FinishProject project={product} /></FlexBox>)}
+                {product.status?.finished && (<FlexBox alignItems="center" gap={2}>
+                    <DownloadEndPDF project={product} />
+                  </FlexBox>)}
             </Card>
         </Grid>
         <Grid item md={9} xs={12}>
@@ -173,32 +190,16 @@ const ProductDetails = ({ product }) => {
               </TabList>
               <Box>
                 <TabPanel value="1">
-                <Paragraph>
-                    <Span color="grey.600">
-                        <ProductUsers id={product._id} users={product.miembros}/>
-                    </Span>
-                </Paragraph>
+                  <ProductUsers id={product._id} users={product.miembros}/>
                 </TabPanel>
                 <TabPanel value="2">
-                <Paragraph>
-                    <Span color="grey.600">
-                        <ProductMovements id={product._id} />
-                    </Span>
-                </Paragraph>
+                  <ProductMovements id={product._id} />
                 </TabPanel>
                 <TabPanel value="3">
-                <Paragraph>
-                    <Span color="grey.600">
-                      <ProductBudget id={product._id} />
-                    </Span>
-                </Paragraph>
+                  <ProductBudget id={product._id} />
                 </TabPanel>
                 <TabPanel value="4">
-                <Paragraph>
-                    <Span color="grey.600">
-                        <ProductLogs id={product._id} />
-                    </Span>
-                </Paragraph>
+                  <ProductLogs id={product._id} />
                 </TabPanel>
               </Box>
             </TabContext>   

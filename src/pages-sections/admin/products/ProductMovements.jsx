@@ -67,7 +67,7 @@ function Movimientos({ id }) {
             <TableBody>
               { actions.map((action) => (
                 <TableRow
-                  key={action._id.id}
+                  key={action._id.$oid}
                   sx={{ '&:last-child td, &:last-child th': { border: 0 }, height: '50px' }}
                 >
                   <TableCell component="th" scope="row">

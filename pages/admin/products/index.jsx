@@ -80,15 +80,6 @@ export default function ProductList() {
     }));
   };
 
-  const handleChangeRowsPerPage = (event) => {
-    const newLimit = parseInt(event.target.value, 10);
-    setPagination((prevPagination) => ({
-      ...prevPagination,
-      skip: 0,
-      page: 0,
-      limit: newLimit
-    }));
-  };
   return (
     <Box py={4}>
       <H3 mb={2}>Lista de Proyectos</H3>
@@ -117,10 +108,8 @@ export default function ProductList() {
 
         <Stack alignItems="center" my={4}>
           <TablePagination
-              onPageChange={handleChangePage}
-              page={pagination.page}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-              rowsPerPage={pagination.limit}
+              onChange={handleChangePage}
+              page={pagination.page}              
               count={totalCount || 0}
             />
         </Stack>

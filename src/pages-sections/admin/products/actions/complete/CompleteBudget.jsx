@@ -4,7 +4,6 @@ import {
     DialogContent,
     DialogActions,
     DialogTitle,
-    Tooltip,
     Button,
     Chip,
     InputLabel,
@@ -58,12 +57,10 @@ function CerrarDocumento({ budget }) {
       {`${file.path}-${file.size}bytes`}
     </Box>
   ));
-    console.log(budget)
+
   return (
     <Box>
-      <Tooltip title={status}>
       <Chip color="primary" onClick={handleClickStatus} clickable variant="outlined" label="Asignar Monto"/>
-      </Tooltip>
       <Dialog open={isOpen}>
         <DialogTitle>Agrega la factura de {budget.descripcion}</DialogTitle>
         <DialogContent>

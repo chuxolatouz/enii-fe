@@ -1,6 +1,5 @@
 import { Button } from "@mui/material";
 import { useSnackbar } from "notistack";
-import Router from "next/router";
 import { useApi } from "contexts/AxiosContext";
 import {
   StatusWrapper,
@@ -15,7 +14,7 @@ import DeleteRule from './DeleteRule'
 
 // ========================================================================
 
-const RequestRow = ({ request }) => {
+const RequestRow = ({ request, fetchRequest }) => {
   const { nombre, reglas, status, _id } = request;
   const { api } = useApi();
   const { enqueueSnackbar } = useSnackbar();
@@ -30,8 +29,9 @@ const RequestRow = ({ request }) => {
     const value = { resolution: resol }
     api.post(`/completar_solicitud_regla_fija/${_id.$oid}`,
       value
-    ).then(() => {
-      Router.reload();
+    ).then((response) => {
+      enqueueSnackbar(response.data.message, { variant: "success" });
+      fetchRequest();
     }).catch((error) => {
       console.log(error)
       enqueueSnackbar(error.message, { variant: "error" })
@@ -83,7 +83,7 @@ const RequestRow = ({ request }) => {
               <ShowRules nombre={nombre} reglas={reglas}/>
               {
                 status != "assigned" && (
-                  <DeleteRule id={_id} />
+                  <DeleteRule id={_id} fetchRequest={fetchRequest}/>
                 )
               }
             </StyledTableCell>
