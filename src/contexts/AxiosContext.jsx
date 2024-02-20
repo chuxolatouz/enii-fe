@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 export const AxiosContext = createContext();
 
 export function AxiosProvider({ children }) {
-  const BASE_URL = process.env.NEXT_APP_BACKEND;
+  const BASE_URL = "https://gpt-seven-blond.vercel.app/";
   const router = useRouter();
   const token = localStorage.getItem('token');
   
