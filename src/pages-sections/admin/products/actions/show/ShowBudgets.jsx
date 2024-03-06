@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 import {
   Dialog,
   DialogTitle,
@@ -13,18 +13,21 @@ import {
   Box,
   Divider
 } from '@mui/material';
-import { H3, H5, Span } from "components/Typography";
+import { H3, Span } from "components/Typography";
 import { FlexBox } from "components/flex-box";
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import { StyledIconButton } from "pages-sections/admin/StyledComponents";
 import { currency } from 'lib';
 
 export default function ShowDocument({ budgets }) {
-  const [isOpen, setIsOpen] = React.useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
-  const handleDownload = (ruta) => {
-    window.open(ruta, '_blank');
+
+  const handleDownload = async (archivo) => {
+    window.open(`https://f005.backblazeb2.com/b2api/v1/b2_download_file_by_id?fileId=${archivo.public_id}`, '_blank')
+    
   };
+
   return (
     <>
       <StyledIconButton onClick={() => setIsOpen(true)}>
@@ -64,7 +67,7 @@ export default function ShowDocument({ budgets }) {
                 <TableRow key={archivo.nombre}>
                   <TableCell>{archivo.nombre}</TableCell>
                   <TableCell>
-                    <Button variant="outlined" onClick={() => handleDownload(archivo.ruta)}>Descargar</Button>
+                    <Button variant="outlined" onClick={() => handleDownload(archivo)}>Descargar</Button>
                   </TableCell>                  
                 </TableRow>
               ))}
@@ -85,7 +88,7 @@ export default function ShowDocument({ budgets }) {
                 <TableRow key={archivo.nombre}>
                   <TableCell>{archivo.nombre}</TableCell>
                   <TableCell>
-                    <Button variant="outlined" onClick={() => handleDownload(archivo.ruta)}>Descargar</Button>
+                    <Button variant="outlined" onClick={() => handleDownload(archivo)}>Descargar</Button>
                   </TableCell>
                 </TableRow>
               ))}

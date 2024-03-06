@@ -38,7 +38,7 @@ function AddBudget({ id }) {
       setIsOpen(false);
       enqueueSnackbar(response.data.mensaje, { variant: 'success' });
     }).catch((error) => {
-      if (error.response) {
+      if (error?.response?.data?.message) {
           enqueueSnackbar(error.response.data.message, { variant: 'error'})
       } else {
           enqueueSnackbar(error.message, { variant: 'error'})
