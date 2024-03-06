@@ -19,7 +19,12 @@ function RouteGuard({ children }) {
       const token = window.localStorage.getItem("token")
       const isLoggedIn = typeof token === 'string' && token.trim().length > 0;
       const returnUrl = router.query.returnUrl;
-      // console.log(isLoggedIn)
+      
+      if (path === "/" && !isLoggedIn) {
+        router.push("/admin/products");
+        return; // Exit the function early after redirect
+      }
+      
       if (!isLoggedIn && !isPublicPath) {
         router.push({
           pathname: "/login",
