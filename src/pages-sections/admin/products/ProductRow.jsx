@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { Edit, RemoveRedEye } from "@mui/icons-material";
-import { Box } from "@mui/material";
+import { Box, Tooltip } from "@mui/material";
 import { FlexBox } from "components/flex-box";
 import { Paragraph } from "components/Typography";
 import { currency } from "lib";
@@ -77,16 +77,19 @@ const ProductRow = ({ product, fetchProducts }) => {
       <StyledTableCell align="center">
         <StyledIconButton
           onClick={() => router.push(`/admin/products/edit/${_id.$oid}`)}
-        >
-          <Edit />
+          >
+          <Tooltip title="Editar info de Proyecto">
+            <Edit />
+          </Tooltip>
         </StyledIconButton>
 
         <StyledIconButton 
           onClick={() => router.push(`/admin/products/${_id.$oid}`)}
         >
-          <RemoveRedEye />
+          <Tooltip title="Ver detalles de Proyecto">
+            <RemoveRedEye />
+          </Tooltip>
         </StyledIconButton>
-
         <DeleteProduct product={product} fetchProducts={fetchProducts} />
       </StyledTableCell>
       

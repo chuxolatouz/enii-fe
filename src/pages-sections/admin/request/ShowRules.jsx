@@ -1,5 +1,15 @@
 import { useState } from 'react';
-import { Button, Dialog, DialogTitle, DialogActions, DialogContent, Grid, Typography, Divider } from "@mui/material";
+import { 
+    Button,
+    Dialog,
+    DialogTitle,
+    DialogActions,
+    DialogContent,
+    Grid,
+    Typography,
+    Divider,
+    Tooltip
+} from "@mui/material";
 import { RemoveRedEye } from "@mui/icons-material";
 import { H3 } from 'components/Typography';
 import {
@@ -18,7 +28,10 @@ const ShowRules = ({reglas, nombre}) => {
     return(
         <>
             <StyledIconButton onClick={handleModal}>
-                <RemoveRedEye />
+                <Tooltip title="Ver detalles de la regla">
+                    <RemoveRedEye />
+
+                </Tooltip>
             </StyledIconButton>
             <Dialog open={open} onClose={handleModal}>
                 <DialogTitle><H3> Reglas de {nombre} </H3>

@@ -5,7 +5,8 @@ import {
     Dialog,
     DialogTitle,
     DialogActions,
-    Button
+    Button,
+    Tooltip
 } from "@mui/material"
 import Router from 'next/router';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -43,7 +44,9 @@ const DeleteBudget = ({ budget }) => {
     return (
         <>  
             <StyledIconButton>
-                <DeleteIcon color="error" onClick={handleDeleteModal}/>
+                <Tooltip title="Eliminar Presupuesto">
+                    <DeleteIcon color="error" onClick={handleDeleteModal}/>
+                </Tooltip>
             </StyledIconButton>
             <Dialog open={open} onClose={handleCancelDelete}>
                 <DialogTitle>¿Estás seguro de que quieres eliminar este presupuesto?</DialogTitle>

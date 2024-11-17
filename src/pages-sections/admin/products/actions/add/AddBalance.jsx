@@ -31,6 +31,7 @@ function Acciones({ id }) {
     const data = { project_id: id, balance: balanceParsed };
     api.patch('/asignar_balance', data).then(() => {
       handleClose();
+      Router.reload();
       fetchBalance
     }).catch((error) => {
       if (error.response) {

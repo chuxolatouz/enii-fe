@@ -5,7 +5,8 @@ import {
   Button,
   Dialog,
   DialogTitle,
-  DialogActions
+  DialogActions,
+  Tooltip
 } from "@mui/material";
 import { FlexBox } from "components/flex-box";
 import { Paragraph } from "components/Typography";
@@ -76,7 +77,9 @@ const CustomerRow = ({ customer, fetchUsers }) => {
 
       <StyledTableCell align="center">
         <StyledIconButton onClick={() => handleDelete(customer)}>
-          <Delete />
+          <Tooltip title="Eliminar usuario de la plataforma">
+            <Delete />
+          </Tooltip>
         </StyledIconButton>
       </StyledTableCell>
       <Dialog open={open} onClose={handleCancelDelete}>

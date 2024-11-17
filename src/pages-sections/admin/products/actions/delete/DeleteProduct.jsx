@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Delete } from "@mui/icons-material";
-import { Dialog, DialogTitle, DialogActions, Button } from "@mui/material";
+import { Dialog, DialogTitle, DialogActions, Button, Tooltip } from "@mui/material";
 import { useSnackbar } from 'notistack';
 import Router from "next/router";
 import { StyledIconButton } from 'pages-sections/admin/StyledComponents';
@@ -40,7 +40,9 @@ const DeleteProduct = ({ product, fetchProducts }) => {
     return (
         <>
         { product.status.finished || !product.status?.completado?.includes(1) && <StyledIconButton onClick={handleDelete} color="error">
-          <Delete  color="error"/>
+          <Tooltip title="Eliminar Proyecto">
+            <Delete  color="error"/>
+          </Tooltip>
         </StyledIconButton>}
         <Dialog open={open} onClose={handleCancelDelete}>
         <DialogTitle>¿Estás seguro de que quieres eliminar este Proyecto?</DialogTitle>

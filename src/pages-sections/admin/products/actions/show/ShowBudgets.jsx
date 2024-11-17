@@ -11,7 +11,8 @@ import {
   TableRow,
   Button,
   Box,
-  Divider
+  Divider,
+  Tooltip
 } from '@mui/material';
 import { H3, Span } from "components/Typography";
 import { FlexBox } from "components/flex-box";
@@ -31,7 +32,10 @@ export default function ShowDocument({ budgets }) {
   return (
     <>
       <StyledIconButton onClick={() => setIsOpen(true)}>
-        <RemoveRedEyeIcon />
+        <Tooltip title="Ver Presupuesto">
+          <RemoveRedEyeIcon />
+
+        </Tooltip>
       </StyledIconButton>
       <Dialog open={isOpen} fullWidth>
         <DialogTitle>

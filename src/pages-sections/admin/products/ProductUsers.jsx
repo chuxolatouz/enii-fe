@@ -11,7 +11,7 @@ import {
   DialogTitle,
   DialogActions,
   Button,
-  Box,
+  Tooltip
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Paper from '@mui/material/Paper';
@@ -93,7 +93,9 @@ function ProjectUsers({ users, id }) {
                 <TableCell align="left">{action.fecha_ingreso}</TableCell>
                 <TableCell>
                   <IconButton color="error" onClick={() => handleDelete(action.id)}>
-                    <DeleteIcon />
+                    <Tooltip title="Eliminar usuario de Proyecto">
+                      <DeleteIcon />
+                    </Tooltip>
                   </IconButton>
                 </TableCell>
               </TableRow>

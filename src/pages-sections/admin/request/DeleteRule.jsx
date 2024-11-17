@@ -4,7 +4,8 @@ import {
   Button,
   Dialog,
   DialogTitle,
-  DialogActions
+  DialogActions,
+  Tooltip
 } from "@mui/material";
 import {
     StyledIconButton,
@@ -39,7 +40,9 @@ const DeleteRule = ({ id, fetchRequest }) => {
     return(
         <>
         <StyledIconButton onClick={handleModal}>
-          <Delete />
+            <Tooltip title="Eliminar Solicitud">
+                <Delete />
+            </Tooltip>
         </StyledIconButton>      
         <Dialog open={open} onClose={handleCancelDelete}>
             <DialogTitle>¿Estás seguro de que quieres eliminar esta solicitud?</DialogTitle>

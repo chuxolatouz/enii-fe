@@ -2,30 +2,32 @@ import PropTypes from 'prop-types';
 import { CircularProgress } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import Verify from "components/icons/Verify";
-import CreditCardVerified from "components/icons/CreditCardVerified";
+import VerifiedIcon from '@mui/icons-material/Verified';
+import Tooltip from '@mui/material/Tooltip';
 
 function CircularProgressWithLabel(props) {
   return (
-    <Box sx={{ position: 'relative', display: 'inline-flex' }}>
-      <CircularProgress variant="determinate" {...props} />
-      <Box
-        sx={{
-          top: 0,
-          left: 0,
-          bottom: 0,
-          right: 0,
-          position: 'absolute',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <Typography variant="caption" component="div" color="text.secondary">
-          {`${Math.round(props.value)}%`}
-        </Typography>
+    <Tooltip title="Proyecto pendiente de configurar">
+      <Box sx={{ position: 'relative', display: 'inline-flex' }}>
+        <CircularProgress variant="determinate" {...props} />
+        <Box
+          sx={{
+            top: 0,
+            left: 0,
+            bottom: 0,
+            right: 0,
+            position: 'absolute',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+          >
+          <Typography variant="caption" component="div" color="text.secondary">
+            {`${Math.round(props.value)}%`}
+          </Typography>
+        </Box>
       </Box>
-    </Box>
+    </Tooltip>
   );
 }
 
@@ -45,14 +47,19 @@ export default function CircularWithValueLabel({ status }) {
     }
     
     if (status.finished) {
-        return <Verify sx={{ marginLeft: 1 }} />
+        return <Tooltip title="Proyecto Finalizado">
+              <VerifiedIcon color="info" sx={{ marginLeft: 1 }} />
+          </Tooltip>
     } else {
         const progress = calculateProgress()
 
         if (progress === 100) {
-          return <CreditCardVerified sx={{ marginLeft: 1 }} color="success" />
+          return <Tooltip title="Proyecto activo">
+            <VerifiedIcon sx={{ marginLeft: 1 }} color="success" />
+          </Tooltip>
         } else {
           return <CircularProgressWithLabel color={progress === 100 ? "success" : "secondary"} value={progress} />;
+          
         }
     }
 
