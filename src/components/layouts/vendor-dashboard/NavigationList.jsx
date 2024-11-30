@@ -50,6 +50,6 @@ export const navigations = [
   {
     name: "Logout",
     icon: duotone.Session,
-    path: "/",
+    type: "action",
   },
 ];

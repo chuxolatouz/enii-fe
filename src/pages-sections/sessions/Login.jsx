@@ -5,6 +5,7 @@ import { useSnackbar } from "notistack";
 import { useFormik } from "formik";
 import { H1 } from "components/Typography";
 import BazaarTextField from "components/BazaarTextField";
+import BazaarImage from "components/BazaarImage";
 import EyeToggleButton from "./EyeToggleButton";
 import { useApi } from "contexts/AxiosContext"
 
@@ -55,6 +56,7 @@ const Login = () => {
     // If the request was successful, save the token and redirect to the home page.
     api.post('/login', values).then((response) => {
       localStorage.setItem('token', response.data.token);
+      localStorage.setItem('user', JSON.stringify({nombre: response.data.nombre, role: response.data.role }))
       window.location.href = '/admin/products';
     }).catch((error) => {
       if (error.response) {
@@ -62,7 +64,7 @@ const Login = () => {
       } else {
           enqueueSnackbar(error.message, { variant: 'error'})
       }
-  })
+    })
 
   };
 
@@ -75,12 +77,13 @@ const Login = () => {
   return (
     <Wrapper elevation={3} passwordVisibility={passwordVisibility}>
       <form onSubmit={handleSubmit}>
-        {/* <BazaarImage
-          src="/assets/images/bazaar-black-sm.svg"
+        <BazaarImage
+          src="/assets/images/logo-enii.png"
           sx={{
             m: "auto",
+            width: "-webkit-fill-available"
           }}
-        /> */}
+        />
 
         <H1 textAlign="center" mt={1} mb={4} fontSize={16}>
           Bienvenidos a ENII
@@ -96,8 +99,8 @@ const Login = () => {
           onBlur={handleBlur}
           value={values.email}
           onChange={handleChange}
-          label="Email or Phone Number"
-          placeholder="exmple@mail.com"
+          label="Email"
+          placeholder="example@enii.com.ve"
           error={!!touched.email && !!errors.email}
           helperText={touched.email && errors.email}
         />

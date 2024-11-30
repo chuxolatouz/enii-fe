@@ -6,11 +6,17 @@ export const AxiosContext = createContext();
 
 export function AxiosProvider({ children }) {
   const BASE_URL = "https://gpt-seven-blond.vercel.app/";
-  // const BASE_URL = "http://localhost:5001/"
+  // const BASE_URL = "http://localhost:5000/"
   // const BASE_URL = "http://127.0.0.1:5000/"
   const router = useRouter();
-  const token = localStorage.getItem('token');
-  
+
+  const user = useMemo(() => {
+    const userData = localStorage.getItem('user');
+    return userData ? JSON.parse(userData) : null;
+  }, []);
+
+  const token = user?.token || localStorage.getItem('token');
+
   const api = useMemo(() => {
 
     const requestHeaders = {
@@ -19,7 +25,7 @@ export function AxiosProvider({ children }) {
     };
 
     // Add Authorization header if we have a token
-    if (token && token != '') {
+    if (token && token !== '') {
       requestHeaders.Authorization = `Bearer ${token}`;
     }
 
@@ -44,6 +50,7 @@ export function AxiosProvider({ children }) {
         if (error.response && error.response.status === 403) {
           // Eliminar el token y redireccionar a la página de inicio de sesión
           localStorage.removeItem('token');
+          localStorage.removeItem('user');
           router.push('/login');
         }
         return Promise.reject(error);
@@ -51,11 +58,11 @@ export function AxiosProvider({ children }) {
     );
 
     return axiosInstance;
-  }, [BASE_URL]);
+  }, [BASE_URL, token]);
 
   return (
     // eslint-disable-next-line react/jsx-no-constructed-context-values
-    <AxiosContext.Provider value={{ api }}>
+    <AxiosContext.Provider value={{ api, user }}>
       {children}
     </AxiosContext.Provider>
   );

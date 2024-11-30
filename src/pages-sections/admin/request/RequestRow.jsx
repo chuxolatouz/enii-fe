@@ -16,7 +16,7 @@ import DeleteRule from './DeleteRule'
 
 const RequestRow = ({ request, fetchRequest }) => {
   const { nombre, reglas, status, _id } = request;
-  const { api } = useApi();
+  const { api, user } = useApi();
   const { enqueueSnackbar } = useSnackbar();
 
   const handleRequest = (resolution) => {
@@ -69,7 +69,7 @@ const RequestRow = ({ request, fetchRequest }) => {
       
             <StyledTableCell align="center">
               {
-                status === "new" && (
+                status === "new" && user.role === "usuario" && (
                   <>
                   <Button variant="outlined" color="success" onClick={() => handleRequest('accept')}>
                     Aceptar
@@ -82,7 +82,7 @@ const RequestRow = ({ request, fetchRequest }) => {
               }
               <ShowRules nombre={nombre} reglas={reglas}/>
               {
-                status != "assigned" && (
+                status != "assigned" && user.role ==="usuario" && (
                   <DeleteRule id={_id} fetchRequest={fetchRequest}/>
                 )
               }

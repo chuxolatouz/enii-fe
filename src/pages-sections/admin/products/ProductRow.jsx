@@ -14,6 +14,7 @@ import {
 import DeleteProduct from 'pages-sections/admin/products/actions/delete/DeleteProduct';
 
 import CircularProgress from "components/circular-progress/CircularProgress";
+import { useApi } from "contexts/AxiosContext";
 
 // ========================================================================
 
@@ -24,6 +25,7 @@ const ProductRow = ({ product, fetchProducts }) => {
   const { nombre, balance, fecha_inicio, fecha_fin, _id, status } = product;
 
   const router = useRouter();
+  const { user } = useApi();
 
   return (
     <StyledTableRow tabIndex={-1} role="checkbox">
@@ -75,13 +77,13 @@ const ProductRow = ({ product, fetchProducts }) => {
       </StyledTableCell>
 
       <StyledTableCell align="center">
-        <StyledIconButton
+        {user.role === "admin" && <StyledIconButton
           onClick={() => router.push(`/admin/products/edit/${_id.$oid}`)}
           >
           <Tooltip title="Editar info de Proyecto">
             <Edit />
           </Tooltip>
-        </StyledIconButton>
+        </StyledIconButton>}
 
         <StyledIconButton 
           onClick={() => router.push(`/admin/products/${_id.$oid}`)}
@@ -90,7 +92,7 @@ const ProductRow = ({ product, fetchProducts }) => {
             <RemoveRedEye />
           </Tooltip>
         </StyledIconButton>
-        <DeleteProduct product={product} fetchProducts={fetchProducts} />
+        {user.role ==="admin" && <DeleteProduct product={product} fetchProducts={fetchProducts} />}
       </StyledTableCell>
       
     </StyledTableRow>

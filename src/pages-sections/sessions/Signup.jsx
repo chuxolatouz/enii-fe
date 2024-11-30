@@ -63,8 +63,8 @@ const Signup = () => {
           onBlur={handleBlur}
           value={values.email}
           onChange={handleChange}
-          label="Email or Phone Number"
-          placeholder="exmple@mail.com"
+          label="Email"
+          placeholder="example@enii.com.ve"
           error={!!touched.email && !!errors.email}
           helperText={touched.email && errors.email}
         />

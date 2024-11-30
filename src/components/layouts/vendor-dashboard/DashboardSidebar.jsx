@@ -46,75 +46,63 @@ const DashboardSidebar = (props) => {
     router.push(path);
     setShowMobileSideBar();
   };
+
+  const handleLogout = () => {
+    // Remove token from localStorage
+    localStorage.removeItem("token");
+
+    // Redirect to the login page
+    router.push("/login");
+  };
+
   const renderLevels = (data) => {
     return data.map((item, index) => {
-      if (item.type === "label")
+      if (item.type === "label") {
         return (
-          <ListLabel key={index} compact={COMPACT}>
+          <ListLabel key={index} compact={sidebarCompact ? 1 : 0}>
             {item.label}
           </ListLabel>
         );
+      }
+
       if (item.children) {
         return (
-          <SidebarAccordion key={index} item={item} sidebarCompact={COMPACT}>
+          <SidebarAccordion key={index} item={item} sidebarCompact={sidebarCompact}>
             {renderLevels(item.children)}
           </SidebarAccordion>
         );
-      } else if (item.type === "extLink") {
+      }
+
+      if (item.type === "action") {
+        // For Logout button or other custom actions
         return (
-          <ExternalLink
+          <NavItemButton
             key={index}
-            href={item.path}
-            rel="noopener noreferrer"
-            target="_blank"
+            onClick={handleLogout} // Call the logout handler
           >
-            <NavItemButton key={item.name} name="child" active={0}>
-              {item.icon ? (
-                <ListIconWrapper>
-                  <item.icon />
-                </ListIconWrapper>
-              ) : (
-                <span className="item-icon icon-text">{item.iconText}</span>
-              )}
-
-              <StyledText compact={COMPACT}>{item.name}</StyledText>
-
-              {/* <Box mx="auto" /> */}
-
-              {item.badge && (
-                <BadgeValue compact={COMPACT}>{item.badge.value}</BadgeValue>
-              )}
-            </NavItemButton>
-          </ExternalLink>
-        );
-      } else {
-        return (
-          <Box key={index}>
-            <NavItemButton
-              key={item.name}
-              className="navItem"
-              active={activeRoute(item.path)}
-              onClick={() => handleNavigation(item.path)}
-            >
-              {item?.icon ? (
-                <ListIconWrapper>
-                  <item.icon />
-                </ListIconWrapper>
-              ) : (
-                <BulletIcon active={activeRoute(item.path)} />
-              )}
-
-              <StyledText compact={COMPACT}>{item.name}</StyledText>
-
-              {/* <Box mx="auto" /> */}
-
-              {item.badge && (
-                <BadgeValue compact={COMPACT}>{item.badge.value}</BadgeValue>
-              )}
-            </NavItemButton>
-          </Box>
+            {item.icon && (
+              <ListIconWrapper>
+                <item.icon />
+              </ListIconWrapper>
+            )}
+            <StyledText compact={sidebarCompact ? 1 : 0}>{item.name}</StyledText>
+          </NavItemButton>
         );
       }
+
+      return (
+        <NavItemButton
+          key={index}
+          onClick={() => router.push(item.path)} // Navigate to the path
+        >
+          {item.icon && (
+            <ListIconWrapper>
+              <item.icon />
+            </ListIconWrapper>
+          )}
+          <StyledText compact={sidebarCompact ? 1 : 0}>{item.name}</StyledText>
+        </NavItemButton>
+      );
     });
   };
   const content = (
@@ -142,7 +130,7 @@ const DashboardSidebar = (props) => {
             alt="Logo"
             width={105}
             height={50}
-            src="/assets/images/logo.svg"
+            src="/assets/images/logo-enii.png"
             style={{
               marginLeft: 8,
             }}
@@ -167,8 +155,8 @@ const DashboardSidebar = (props) => {
         <Avatar
           src={
             COMPACT
-              ? "/assets/images/bazaar-white-sm.svg"
-              : "/assets/images/logo.svg"
+              ? "/assets/images/logo-reducido.png"
+              : "/assets/images/logo-enii.png"
           }
           sx={{
             borderRadius: 0,

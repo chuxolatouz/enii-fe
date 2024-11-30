@@ -42,10 +42,7 @@ function DownloadEndPDF({ project }) {
       setOpen(false);
       setLoading(false);
     };
-    console.log(project);
-    console.log('movements', movements);
-    console.log('logs', logs);
-    console.log('budgets', budgets);
+    
     return (
         <>
             <Paragraph>
