@@ -69,7 +69,7 @@ const RequestRow = ({ request, fetchRequest }) => {
       
             <StyledTableCell align="center">
               {
-                status === "new" && user.role === "usuario" && (
+                status === "new" && user.role === "admin" && (
                   <>
                   <Button variant="outlined" color="success" onClick={() => handleRequest('accept')}>
                     Aceptar
@@ -82,7 +82,7 @@ const RequestRow = ({ request, fetchRequest }) => {
               }
               <ShowRules nombre={nombre} reglas={reglas}/>
               {
-                status != "assigned" && user.role ==="usuario" && (
+                status != "assigned" && user.role ==="admin" && (
                   <DeleteRule id={_id} fetchRequest={fetchRequest}/>
                 )
               }

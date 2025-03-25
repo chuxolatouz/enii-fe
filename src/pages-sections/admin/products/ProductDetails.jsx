@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Box,
   Card,
@@ -21,6 +21,7 @@ import ProductUsers from "pages-sections/admin/products/ProductUsers";
 import ProductMovements from "pages-sections/admin/products/ProductMovements";
 import ProductLogs from "pages-sections/admin/products/ProductLogs";
 import ProductBudget from "pages-sections/admin/products/ProductBudget";
+import { useApi } from "contexts/AxiosContext";
 
 import AddFixedRules from "./actions/add/AddFixedRules";
 import AddRules from "./actions/add/AddRules";
@@ -33,12 +34,33 @@ import DownloadEndPDF from './actions/complete/DownloadEndPDF';
 const ProductDetails = ({ product }) => {
 
     const [value, setValue] = useState("1");
-
+    const [categories, setCategories] = useState([]);
+    const { api } = useApi();
     const handleChange = (event, newValue) => {
         setValue(newValue);
 
     };
+    useEffect(() => {
+      api.get('/mostrar_categorias')
+      .then((response) => {
+        setCategories(response.data);
+      }).catch((error) => {    
+        console.log(error)        
+          if (error.response) {
+              enqueueSnackbar(error.response.data.message, { variant: 'error'})
+          } else {
+              enqueueSnackbar(error.message, { variant: 'error'})
+          }
+      })
+    }, [])
 
+    const findCategory = (catValue) => {
+      const category = categories.find((c) => c.value === catValue);
+      
+      return category.nombre
+    }
+
+    
   return (
     <Grid container spacing={3}>
         <Grid item md={3} xs={12}>
@@ -99,7 +121,7 @@ const ProductDetails = ({ product }) => {
                     </H6>
                 </FlexBox>)}
                 <FlexBox alignItems="left" gap={4}>
-                    <Span gap={4} color="grey.600">Descripcion:</Span>
+                    <Span gap={4} color="grey.600">Descripción:</Span>
                 </FlexBox>
                 <FlexBox alignItems="left" gap={4}>
                     <H6 mt={0} mb={2}>
@@ -108,12 +130,10 @@ const ProductDetails = ({ product }) => {
                     </H6>
                 </FlexBox>
                 <FlexBox alignItems="left" gap={4}>
-                    <Span gap={4} color="grey.600">Categorias:</Span>
+                    <Span gap={4} color="grey.600">Categoría:</Span>
                 </FlexBox>
                 <FlexBox alignItems="left" gap={4}>
-                    {product.categorias && product.categorias.map((cat) => {
-                        <Chip>{cat.value}</Chip>
-                    })}
+                    {product.categoria ? <Chip label={findCategory(product.categoria)} /> : null }
                 </FlexBox>
                 <Divider
                     sx={{
@@ -130,13 +150,13 @@ const ProductDetails = ({ product }) => {
                 </FlexBox>
                 <FlexBox alignItems="left" gap={2} sx={{ height: '33px'}}>
                     {product.status?.completado?.includes(3) ? <Verify /> : <TodoList />}
-                    <Span gap={4} color={product.status?.completado?.includes(3) ? 'green' : 'grey.600'}>Lider Proyecto</Span>
+                    <Span gap={4} color={product.status?.completado?.includes(3) ? 'green' : 'grey.600'}>Líder Proyecto</Span>
                 </FlexBox>
                 <FlexBox alignItems="left" gap={2} sx={{ height: '33px'}}>
                     {product.status?.completado?.includes(4) ? 
                     <>
                       <Verify /> 
-                      <Span gap={4} color={'green'}>Reglas de Distribucion</Span>
+                      <Span gap={4} color={'green'}>Reglas de Distribución</Span>
                     </>
                     :
                     <AddRules id={product._id}/>

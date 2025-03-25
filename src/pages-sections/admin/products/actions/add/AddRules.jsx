@@ -79,12 +79,12 @@ function AddRules({ id }) {
       <Grid item>
         <Button variant="text" onClick={handleOpen}>
           <Typography fontSize="14px" color="grey.600">
-            Reglas Distribucion
+            Reglas Distribución
           </Typography>
         </Button>
       </Grid>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Es momento de agregar una Regla de Distribucion</DialogTitle>
+        <DialogTitle>Es momento de agregar una Regla de Distribución</DialogTitle>
         <DialogContent>
           <Box align="center" sx={{ paddingTop: '30px' }}>
             {roles.map((role) => (
@@ -99,7 +99,7 @@ function AddRules({ id }) {
                       onChange={(event) =>
                       setAmounts((prevAmounts) => ({
                           ...prevAmounts,
-                          [role.value]: parseInt(event.target.value, 10),
+                          [role.value]: Number.parseInt(event.target.value, 10),
                       }))
                       }
                       endAdornment={

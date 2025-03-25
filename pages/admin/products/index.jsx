@@ -32,12 +32,12 @@ const tableHeading = [
   },
   {
     id: "status",
-    label: "Status",
+    label: "Estado",
     align: "left",
   },
   {
     id: "action",
-    label: "Accion",
+    label: "Acción",
     align: "center",
   },
 ];

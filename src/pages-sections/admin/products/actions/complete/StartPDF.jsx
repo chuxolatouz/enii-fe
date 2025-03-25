@@ -46,7 +46,7 @@ function Acta({ project }) {
           <View style={styles.header}>
             <Text>Universidad Central de Venezuela</Text>
             <Text>Facultad de Ciencias</Text>
-            <Text>Escuela de Computacion</Text>
+            <Text>Escuela de Computación</Text>
             <Text>ENII</Text>
           </View>
           <View style={styles.header}>Ciencias</View>
@@ -56,7 +56,7 @@ function Acta({ project }) {
           <Text>{project.nombre}</Text>
         </View>
         <View style={styles.section}>
-          <Text style={styles.textHeader}>Descripcion de Proyecto</Text>
+          <Text style={styles.textHeader}>Descripción de Proyecto</Text>
           <Text style={styles.textBody}>{project.descripcion}</Text>
         </View>
         <View style={styles.section}>

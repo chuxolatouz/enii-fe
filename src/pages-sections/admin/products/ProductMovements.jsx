@@ -26,7 +26,7 @@ function Movimientos({ id }) {
     setPagination(value);
   };
   const fixMonto = (monto) => {
-    if (parseFloat(monto) > 0) {
+    if (Number.parseFloat(monto) > 0) {
       return <span style={{ color: '#11cb5f', fontStyle: 'bold' }}>{monto}</span>;
     }
     return <span style={{ color: '#d32f2f', fontStyle: 'bold' }}>{monto}</span>;
@@ -59,8 +59,8 @@ function Movimientos({ id }) {
             <TableRow>
               <TableCell>-</TableCell>
               <TableCell>Persona</TableCell>
-              <TableCell>monto</TableCell>
-              <TableCell>saldo</TableCell>
+              <TableCell>Monto</TableCell>
+              <TableCell>Saldo</TableCell>
             </TableRow>
           </TableHead>
           {actions.length ? (

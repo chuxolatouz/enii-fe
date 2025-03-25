@@ -23,11 +23,11 @@ export default function CreateProduct() {
     fecha_fin: "",
   };
   const validationSchema = yup.object().shape({
-  nombre: yup.string().required("required"),
-  categoria: yup.string().required("required"),
-    descripcion: yup.string().required("required"),
-    fecha_inicio: yup.string().required("required"),
-    fecha_fin: yup.string().required("required"),
+  nombre: yup.string().required("obligatorio"),
+  categoria: yup.string().required("obligatorio"),
+    descripcion: yup.string().required("obligatorio"),
+    fecha_inicio: yup.string().required("obligatorio"),
+    fecha_fin: yup.string().required("obligatorio"),
   });
   const { api } = useApi();
   const { enqueueSnackbar } = useSnackbar();

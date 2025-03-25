@@ -46,7 +46,7 @@ function DownloadEndPDF({ project }) {
     return (
         <>
             <Paragraph>
-                Descargar Acta de Finalizacion
+                Descargar Acta de Finalización
             </Paragraph>
             <StyledIconButton onClick={handleOpen}>
                 <PictureAsPdfOutlined />

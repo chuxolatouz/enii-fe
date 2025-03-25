@@ -13,8 +13,8 @@ import { useSnackbar } from 'notistack';
 // table column list
 const tableHeading = [
   {
-    id: "Nombre",
-    label: "Name",
+    id: "nombre",
+    label: "Nombre",
     align: "left",
   },
   {
@@ -24,7 +24,7 @@ const tableHeading = [
   },
   {
     id: "action",
-    label: "Action",
+    label: "Acción",
     align: "center",
   },
 ];
@@ -74,7 +74,7 @@ export default function CustomerList() {
   };
 
   const handleChangeRowsPerPage = (event) => {
-    const newLimit = parseInt(event.target.value, 10);
+    const newLimit = Number.parseInt(event.target.value, 10);
     setPagination((prevPagination) => ({
       ...prevPagination,
       skip: 0,

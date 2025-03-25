@@ -50,7 +50,7 @@ function Documentos({ id }) {
         <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
           <TableHead>
             <TableRow>
-              <TableCell>Descripcion</TableCell>
+              <TableCell>Descripción</TableCell>
               <TableCell>Archivos</TableCell>
               <TableCell>Estado</TableCell>
               <TableCell>Acciones</TableCell>

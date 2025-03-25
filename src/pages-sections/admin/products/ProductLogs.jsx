@@ -52,7 +52,7 @@ function Logs({ id }) {
           <TableHead>
             <TableRow>
               <TableCell>Fecha</TableCell>
-              <TableCell>registro</TableCell>
+              <TableCell>Registro</TableCell>
             </TableRow>
           </TableHead>
           {actions.length ? (

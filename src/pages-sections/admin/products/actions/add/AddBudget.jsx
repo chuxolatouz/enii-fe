@@ -58,13 +58,13 @@ function AddBudget({ id }) {
         Subir presupuestos
       </Button>
       <Dialog open={isOpen}>
-        <DialogTitle><H3>Agrega un proceso de Documentacion</H3></DialogTitle>
+        <DialogTitle><H3>Agrega un proceso de Documentación</H3></DialogTitle>
         <DialogContent>
           <FormControl fullWidth variant="outlined" sx={{ marginTop: '20px', marginBottom: '20px' }}>
-            <InputLabel id="documentos">Descripcion</InputLabel>
+            <InputLabel id="documentos">Descripción</InputLabel>
             <OutlinedInput
               labelId="documentos"
-              label="Descripcion"
+              label="Descripción"
               value={text}
               onChange={(e) => setText(e.target.value)}
             />

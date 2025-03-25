@@ -68,7 +68,7 @@ function CerrarDocumento({ budget }) {
             <InputLabel id="documentos">Descripcion</InputLabel>
             <OutlinedInput
               labelId="documentos"
-              label="Descripcion"
+              label="Descripción"
               value={text}
               onChange={(e) => setText(e.target.value)}
             />

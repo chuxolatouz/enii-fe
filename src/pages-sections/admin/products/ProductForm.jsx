@@ -22,7 +22,7 @@ const ProductForm = (props) => {
 
   useEffect(() => {
     api.get('/mostrar_categorias')
-    .then((response) => {      
+    .then((response) => {
       setCategories(response.data);
     }).catch((error) => {    
       console.log(error)        
@@ -91,7 +91,7 @@ const ProductForm = (props) => {
                   helperText={touched.categoria && errors.categoria}                  
                 >
                   {categories.map((category) => (
-                    <MenuItem value={category.nombre}>{category.nombre}</MenuItem>
+                    <MenuItem value={category.value}>{category.nombre}</MenuItem>
                   ))}
                 </TextField>
               </Grid>
@@ -104,10 +104,10 @@ const ProductForm = (props) => {
                   color="info"
                   size="medium"
                   name="descripcion"
-                  label="Descripcion"
+                  label="Descripción"
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  placeholder="Descripcion"
+                  placeholder="Descripción"
                   value={values.descripcion}
                   error={!!touched.descripcion && !!errors.descripcion}
                   helperText={touched.descripcion && errors.descripcion}

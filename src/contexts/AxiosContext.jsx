@@ -5,9 +5,9 @@ import { useRouter } from 'next/router';
 export const AxiosContext = createContext();
 
 export function AxiosProvider({ children }) {
-  const BASE_URL = "https://gpt-seven-blond.vercel.app/";
+  // const BASE_URL = "https://gpt-seven-blond.vercel.app/";
   // const BASE_URL = "http://localhost:5000/"
-  // const BASE_URL = "http://127.0.0.1:5000/"
+  const BASE_URL = "http://127.0.0.1:5000/"
   const router = useRouter();
 
   const user = useMemo(() => {
