@@ -12,6 +12,7 @@ import {
   Paper
 } from '@mui/material';
 import AddBalance from './actions/add/AddBalance';
+import DescargarMovimientos from './actions/download/DownloadMovements';
 import { useApi } from 'contexts/AxiosContext';
 import { useSnackbar } from 'notistack';
 
@@ -52,7 +53,10 @@ function Movimientos({ id }) {
 
   return (
     <Box>
-      <AddBalance id={id} fetchBalance={fetchBalance} />
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+        <AddBalance id={id} fetchBalance={fetchBalance} />
+        <DescargarMovimientos id={id} />
+      </Box>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
           <TableHead>

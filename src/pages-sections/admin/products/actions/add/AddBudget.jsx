@@ -7,17 +7,23 @@ import {
     Button,
     OutlinedInput,
     InputLabel,
+    Select,
+    MenuItem,
     Box,
     FormControl,
+    FormHelperText,
+    Switch,
 } from '@mui/material';
 import DropZone from 'components/DropZone';
-import { H3 } from 'components/Typography';
+import { Span } from 'components/Typography';
 import { useApi } from 'contexts/AxiosContext';
 import { useSnackbar } from 'notistack';
 
-function AddBudget({ id }) {
+function AddBudget({ project }) {
   const [isOpen, setIsOpen] = React.useState(false);
   const [text, setText] = React.useState('');
+  const [selectedObjective, setSelectedObjective] = React.useState('');
+  const [objective, setObjective] = React.useState(false);
   const [amount, setAmount] = React.useState(0);
   const [files, setFiles] = React.useState([]);
   const { api } = useApi();
@@ -28,10 +34,10 @@ function AddBudget({ id }) {
   const handleCrearDoc = () => {
     const formData = new FormData();
     formData.append('descripcion', text);
-    files.forEach((file) => {
+    for (const file of files) {
       formData.append('files', file);
-    });
-    formData.append('proyecto_id', id);
+    }
+    formData.append('proyecto_id', project._id);
     formData.append('monto', amount);
 
     api.post('/documento_crear', formData).then((response) => {
@@ -51,28 +57,47 @@ function AddBudget({ id }) {
       {`${file.path}-${file.size}bytes`}
     </Box>
   ));
-
+  console.log(project)
   return (
     <Box>
       <Button variant="outlined" color="secondary" onClick={() => setIsOpen(true)}>
         Subir presupuestos
       </Button>
       <Dialog open={isOpen}>
-        <DialogTitle><H3>Agrega un proceso de Documentación</H3></DialogTitle>
+        <DialogTitle><Span>Agrega un proceso de Documentación</Span></DialogTitle>
         <DialogContent>
           <FormControl fullWidth variant="outlined" sx={{ marginTop: '20px', marginBottom: '20px' }}>
             <InputLabel id="documentos">Descripción</InputLabel>
             <OutlinedInput
-              labelId="documentos"
+              labelid="documentos"
               label="Descripción"
               value={text}
               onChange={(e) => setText(e.target.value)}
             />
           </FormControl>
+
+          {/* Renderizar objetivos específicos si existen */}
+          {project.objetivos_especificos?.length > 0 && (
+            <FormControl fullWidth variant="outlined" sx={{ marginTop: '20px', marginBottom: '20px' }}>
+              <InputLabel id="objetivo">Seleccionar Objetivo Específico</InputLabel>
+              <Select
+                labelId="objetivo"
+                value={selectedObjective}
+                onChange={(e) => setSelectedObjective(e.target.value)}
+                label="Seleccionar Objetivo Específico"
+              >
+                {project.objetivos_especificos.map((objective, index) => (
+                  <MenuItem key={index+objective} value={objective}>
+                    {objective} {/* Suponiendo que los objetivos tienen un campo "nombre" */}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          )}
           <FormControl fullWidth variant="outlined" sx={{ marginTop: '20px', marginBottom: '20px' }}>
             <InputLabel id="monto">Monto</InputLabel>
             <OutlinedInput
-              labelId="monto"
+              labelid="monto"
               label="Monto"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}

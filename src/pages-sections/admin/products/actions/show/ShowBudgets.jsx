@@ -25,9 +25,16 @@ export default function ShowDocument({ budgets }) {
 
 
   const handleDownload = async (archivo) => {
-    window.open(`https://f005.backblazeb2.com/b2api/v1/b2_download_file_by_id?fileId=${archivo.public_id}`, '_blank')
-    
-  };
+  if (archivo.download_url) {
+    window.open(archivo.download_url, '_blank');
+  } else if (archivo.url) {
+    window.open(archivo.url, '_blank');
+  } else if (archivo.public_id) {
+    window.open(`https://f005.backblazeb2.com/b2api/v1/b2_download_file_by_id?fileId=${archivo.public_id}`, '_blank');
+  } else {
+    alert("No se encontró una URL válida para este archivo");
+  }
+};
 
   return (
     <>

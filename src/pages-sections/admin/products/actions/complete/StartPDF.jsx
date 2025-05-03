@@ -65,7 +65,7 @@ function Acta({ project }) {
         </View>
         <View style={styles.section}>
           <Text style={styles.textHeader}>Miembros involucrados</Text>
-          {project?.miembros?.map((user) => <Text style={styles.textBody}>{`${user.usuario.nombre} bajo el rol: ${user.role.label} el dia ${user.fecha_ingreso}`}</Text>)}
+          {project?.miembros?.map((user) => <Text key={userlusuario._id} style={styles.textBody}>{`${user.usuario.nombre} bajo el rol: ${user.role.label} el dia ${user.fecha_ingreso}`}</Text>)}
         </View>
         <View style={styles.sectionDown}>
           <Text>

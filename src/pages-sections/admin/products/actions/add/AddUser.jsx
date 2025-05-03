@@ -125,10 +125,10 @@ function AsignarMiembro({ id }) {
         </DialogContent>
         <DialogActions sx={{ paddingBottom: '50px' }}>
           <Box sx={{ position: 'absolute', bottom: '16px', right: '16px' }}>
-            <Button color="error" onClick={handleClose}>
+            <Button color="error" variant="outlined" onClick={handleClose}>
               Cancelar
             </Button>
-            <Button color="success" onClick={handleAgregarMiembro}>
+            <Button color="success" variant="outlined" onClick={handleAgregarMiembro}>
               Agregar Usuario
             </Button>
           </Box>

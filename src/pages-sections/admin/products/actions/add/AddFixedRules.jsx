@@ -45,7 +45,7 @@ function AddFixedRules({ id }) {
         setOpen(false);
     }
     const handleAddRule = () => {
-        api.post(`/asignar_regla_fija/`,
+        api.post("/asignar_regla_fija/",
         { 
             regla_id: selectedRule,
             proyecto_id: id

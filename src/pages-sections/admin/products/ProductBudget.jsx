@@ -17,7 +17,7 @@ import BudgetStatus from './budget/BudgetStatus';
 import BudgetActions from './budget/BudgetActions';
 import AddBudget from './actions/add/AddBudget';
 
-function Documentos({ id }) {
+function Documentos({ project }) {
   const [count, setCount] = useState(0);
   const [documentos, setDocumentos] = useState([]);
   const [pagination, setPagination] = useState(1);
@@ -30,7 +30,7 @@ function Documentos({ id }) {
 
   useEffect(() => {
     api
-      .get(`/proyecto/${id}/documentos?page=${pagination - 1}`)
+      .get(`/proyecto/${project._id}/documentos?page=${pagination - 1}`)
       .then((response) => {
         setDocumentos(response.data.request_list);
         setCount(response.data.count);
@@ -45,7 +45,7 @@ function Documentos({ id }) {
 
   return (
     <Box>
-      <AddBudget id={id} />
+      <AddBudget project={project} />
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
           <TableHead>

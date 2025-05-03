@@ -20,6 +20,8 @@ export default function CreateProduct() {
     categoria: "",
     descripcion: "",
     fecha_inicio: "",
+    objetivo_general: "",
+    objetivos_especificos: [],
     fecha_fin: "",
   };
   const validationSchema = yup.object().shape({

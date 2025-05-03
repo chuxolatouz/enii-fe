@@ -56,7 +56,10 @@ const ProductDetails = ({ product }) => {
 
     const findCategory = (catValue) => {
       const category = categories.find((c) => c.value === catValue);
-      
+      if (!category) {
+        return catValue; // Return the original value if not found
+      }
+      // Return the name of the category if found
       return category.nombre
     }
 
@@ -80,7 +83,7 @@ const ProductDetails = ({ product }) => {
                     }}
                 />
                 <FlexBox alignItems="left" gap={4}>
-                    <Span gap={4} color="grey.600">Balance actual:</Span>                    
+                    <Span gap={4} color="grey.600">Saldo actual:</Span>                    
                 </FlexBox>
                 <FlexBox alignItems="left" gap={4}>
                     <H3 mt={0} mb={2}>
@@ -88,7 +91,7 @@ const ProductDetails = ({ product }) => {
                     </H3>
                 </FlexBox>
                 <FlexBox alignItems="left" gap={4}>
-                    <Span gap={4} color="grey.600">Balance inicial:</Span>
+                    <Span gap={4} color="grey.600">Saldo inicial:</Span>
                 </FlexBox>
                 <FlexBox alignItems="left" gap={4}>
 
@@ -179,7 +182,19 @@ const ProductDetails = ({ product }) => {
                     />
                 {product.status?.completado.length === 5 && (
                   <FlexBox alignItems="center" gap={2}>
-                    <DownloadStartPDF project={product} />
+                    {product?.acta_inicio?.documento_url ? (
+                  <Button
+                    variant="outlined"
+                    href={product.acta_inicio.documento_url}
+                    target="_blank"
+                    rel="noopener"
+                    startIcon={<PictureAsPdfOutlined />}
+                  >
+                    Descargar Acta de Inicio
+                  </Button>
+                ) : (
+                  <DownloadStartPDF project={product} />
+                )}
                   </FlexBox>
                 )}
                 {product.status?.completado.length === 5 && (
@@ -216,7 +231,7 @@ const ProductDetails = ({ product }) => {
                   <ProductMovements id={product._id} />
                 </TabPanel>
                 <TabPanel value="3">
-                  <ProductBudget id={product._id} />
+                  <ProductBudget project={product} />
                 </TabPanel>
                 <TabPanel value="4">
                   <ProductLogs id={product._id} />

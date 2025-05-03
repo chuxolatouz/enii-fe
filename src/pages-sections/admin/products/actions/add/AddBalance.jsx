@@ -27,7 +27,7 @@ function Acciones({ id }) {
   const { enqueueSnackbar } = useSnackbar();
 
   const handleAgregarBalance = ({ fetchBalance }) => {
-    const balanceParsed = parseFloat(value).toFixed(2);
+    const balanceParsed = Number.parseFloat(value).toFixed(2);
     const data = { project_id: id, balance: balanceParsed };
     api.patch('/asignar_balance', data).then(() => {
       handleClose();
@@ -52,13 +52,13 @@ function Acciones({ id }) {
     <Box>
       <Box>
         <Button variant="outlined" color="success" onClick={handleOpen}>
-          Agregar Balance
+          Agregar Saldo
         </Button>
       </Box>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Es momento de fondear un proyecto</DialogTitle>
+        <DialogTitle>Es momento de agregar saldo un proyecto</DialogTitle>
         <DialogContent>
-          <Typography>Introduce el monto que desees fondear</Typography>
+          <Typography>Introduce el monto que desees agregar</Typography>
           <FormControl sx={{ margin: '10px' }}>
             <InputLabel id="outlined-adornment-amount">Monto</InputLabel>
             <OutlinedInput
@@ -82,10 +82,10 @@ function Acciones({ id }) {
           </FormControl>
         </DialogContent>
         <DialogActions>
-          <Button color="error" onClick={handleClose}>
+          <Button color="error" variant="outlined" onClick={handleClose}>
             Cancelar
           </Button>
-          <Button color="primary" onClick={handleAgregarBalance}>
+          <Button color="success" variant="outlined" onClick={handleAgregarBalance}>
             Agregar Fondos
           </Button>
         </DialogActions>
