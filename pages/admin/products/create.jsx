@@ -27,10 +27,13 @@ export default function CreateProduct() {
   const validationSchema = yup.object().shape({
   nombre: yup.string().required("obligatorio"),
   categoria: yup.string().required("obligatorio"),
-    descripcion: yup.string().required("obligatorio"),
-    fecha_inicio: yup.string().required("obligatorio"),
-    fecha_fin: yup.string().required("obligatorio"),
-  });
+  descripcion: yup.string().required("obligatorio"),
+  fecha_inicio: yup.string().required("obligatorio"),
+  fecha_fin: yup.string().required("obligatorio"),
+  objetivo_general: yup.string(),
+  objetivos_especificos: yup.array().of("yup.string()"),
+  })
+  
   const { api } = useApi();
   const { enqueueSnackbar } = useSnackbar();
   const router= useRouter();

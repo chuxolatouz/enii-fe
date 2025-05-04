@@ -49,21 +49,57 @@ export default function ShowDocument({ budgets }) {
           <H3> Archivos del presupuesto {budgets.descripcion} </H3>
         </DialogTitle>
         <DialogContent>
-          <Box>
-            <FlexBox alignItems="left" gap={4}>
-              <Span gap={4} color="grey.600">Monto presupuestado:</Span>                                   
-              <H3 mt={0} mb={2}>
-                {currency(budgets.monto)}
-              </H3>
+          <Box mt={2} mb={3}>
+            {budgets?.objetivo_especifico && (
+              <FlexBox alignItems="center" gap={1} mb={2}>
+                <Span color="grey.600" fontSize={14}>
+                  Objetivo específico:
+                </Span>
+                <Span fontSize={14} fontWeight="bold">
+                  {budgets.objetivo_especifico}
+                </Span>
+              </FlexBox>
+            )}
+
+            <FlexBox alignItems="center" gap={1} mb={2}>
+              <Span color="grey.600">Monto presupuestado:</Span>
+              <H3 mt={0} mb={0}>{currency(budgets.monto)}</H3>
             </FlexBox>
-            {budgets.status === "finished" &&
-            <FlexBox alignItems="left" gap={4}>
-              <Span gap={4} color="grey.600">Monto asignado:</Span>
-              <H3 mt={0} mb={2}>
-                {currency(budgets.monto_aprobado)}
-              </H3>
-            </FlexBox>
-            }
+
+            {budgets.status === "finished" && (budgets.referencia || budgets.monto_transferencia || budgets.banco || budgets.cuenta_contable) && (
+              <Box mb={3}>
+                <Divider sx={{ mb: 2 }} />
+                <H3 mb={2}>Información de Transferencia</H3>
+
+                {budgets.referencia && (
+                  <FlexBox alignItems="center" gap={1} mb={1}>
+                    <Span color="grey.600">Referencia:</Span>
+                    <Span fontWeight="bold">{budgets.referencia}</Span>
+                  </FlexBox>
+                )}
+
+                {budgets.monto_transferencia && (
+                  <FlexBox alignItems="center" gap={1} mb={1}>
+                    <Span color="grey.600">Monto Transferido:</Span>
+                    <Span fontWeight="bold">{currency(budgets.monto_transferencia)}</Span>
+                  </FlexBox>
+                )}
+
+                {budgets.banco && (
+                  <FlexBox alignItems="center" gap={1} mb={1}>
+                    <Span color="grey.600">Banco:</Span>
+                    <Span fontWeight="bold">{budgets.banco}</Span>
+                  </FlexBox>
+                )}
+
+                {budgets.cuenta_contable && (
+                  <FlexBox alignItems="center" gap={1}>
+                    <Span color="grey.600">Cuenta Contable:</Span>
+                    <Span fontWeight="bold">{budgets.cuenta_contable}</Span>
+                  </FlexBox>
+                )}
+              </Box>
+            )}
           </Box>
           <Divider />
           <Table>

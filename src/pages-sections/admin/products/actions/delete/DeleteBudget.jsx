@@ -43,11 +43,11 @@ const DeleteBudget = ({ budget }) => {
 
     return (
         <>  
-            <StyledIconButton>
-                <Tooltip title="Eliminar Presupuesto">
-                    <DeleteIcon color="error" onClick={handleDeleteModal}/>
-                </Tooltip>
+            <Tooltip title="Eliminar Presupuesto">
+            <StyledIconButton onClick={handleDeleteModal}>
+                <DeleteIcon color="error" />
             </StyledIconButton>
+            </Tooltip>
             <Dialog open={open} onClose={handleCancelDelete}>
                 <DialogTitle>¿Estás seguro de que quieres eliminar este presupuesto?</DialogTitle>
                 <DialogActions>

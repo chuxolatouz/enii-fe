@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 import {
     Dialog, 
     DialogContent, 
@@ -11,27 +11,44 @@ import {
     MenuItem,
     Box,
     FormControl,
-    FormHelperText,
-    Switch,
+    CircularProgress
 } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
 import DropZone from 'components/DropZone';
 import { Span } from 'components/Typography';
 import { useApi } from 'contexts/AxiosContext';
 import { useSnackbar } from 'notistack';
 
 function AddBudget({ project }) {
-  const [isOpen, setIsOpen] = React.useState(false);
-  const [text, setText] = React.useState('');
-  const [selectedObjective, setSelectedObjective] = React.useState('');
-  const [objective, setObjective] = React.useState(false);
-  const [amount, setAmount] = React.useState(0);
-  const [files, setFiles] = React.useState([]);
+  const [isOpen, setIsOpen] = useState(false);
+  const [text, setText] = useState('');
+  const [objectives, setObjectives] = useState([]);
+  const [selectedObjective, setSelectedObjective] = useState('');
+  const [loadingObjectives, setLoadingObjectives] = useState(false);
+  const [amount, setAmount] = useState(0);
+  const [submitting, setSubmitting] = useState(false);
+  const [files, setFiles] = useState([]);
   const { api } = useApi();
 
   const { enqueueSnackbar } = useSnackbar();
 
+  
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+    useEffect(() => {
+    if (isOpen) {
+      setLoadingObjectives(true);
+      api.get(`/proyecto/${project._id}/objetivos`)
+        .then((res) => setObjectives(res.data.objetivos_especificos))
+        .catch((err) => {
+          console.error(err);
+          enqueueSnackbar("Error al cargar los objetivos específicos", { variant: 'error' });
+        })
+        .finally(() => setLoadingObjectives(false));
+    }
+  }, [isOpen]);
 
   const handleCrearDoc = () => {
+    setSubmitting(true);
     const formData = new FormData();
     formData.append('descripcion', text);
     for (const file of files) {
@@ -39,6 +56,7 @@ function AddBudget({ project }) {
     }
     formData.append('proyecto_id', project._id);
     formData.append('monto', amount);
+    formData.append('objetivo_especifico', selectedObjective);
 
     api.post('/documento_crear', formData).then((response) => {
       setIsOpen(false);
@@ -49,7 +67,9 @@ function AddBudget({ project }) {
       } else {
           enqueueSnackbar(error.message, { variant: 'error'})
       }
-  })
+    }).finally(() => {
+      setSubmitting(false);
+    })
   };
 
   const fileList = files.map((file) => (
@@ -57,14 +77,13 @@ function AddBudget({ project }) {
       {`${file.path}-${file.size}bytes`}
     </Box>
   ));
-  console.log(project)
   return (
     <Box>
       <Button variant="outlined" color="secondary" onClick={() => setIsOpen(true)}>
         Subir presupuestos
       </Button>
       <Dialog open={isOpen}>
-        <DialogTitle><Span>Agrega un proceso de Documentación</Span></DialogTitle>
+        <DialogTitle><Span>Agrega una solicitud de presupuesto</Span></DialogTitle>
         <DialogContent>
           <FormControl fullWidth variant="outlined" sx={{ marginTop: '20px', marginBottom: '20px' }}>
             <InputLabel id="documentos">Descripción</InputLabel>
@@ -77,22 +96,28 @@ function AddBudget({ project }) {
           </FormControl>
 
           {/* Renderizar objetivos específicos si existen */}
-          {project.objetivos_especificos?.length > 0 && (
-            <FormControl fullWidth variant="outlined" sx={{ marginTop: '20px', marginBottom: '20px' }}>
-              <InputLabel id="objetivo">Seleccionar Objetivo Específico</InputLabel>
-              <Select
-                labelId="objetivo"
-                value={selectedObjective}
-                onChange={(e) => setSelectedObjective(e.target.value)}
-                label="Seleccionar Objetivo Específico"
-              >
-                {project.objetivos_especificos.map((objective, index) => (
-                  <MenuItem key={index+objective} value={objective}>
-                    {objective} {/* Suponiendo que los objetivos tienen un campo "nombre" */}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+          {loadingObjectives ? (
+            <Box display="flex" justifyContent="center" alignItems="center" mt={3} mb={3}>
+              <CircularProgress size={24} />
+            </Box>
+          ) : (
+            objectives.length > 0 && (
+              <FormControl fullWidth variant="outlined" sx={{ marginTop: '20px', marginBottom: '20px' }}>
+                <InputLabel id="objetivo">Seleccionar Objetivo Específico</InputLabel>
+                <Select
+                  labelId="objetivo"
+                  value={selectedObjective}
+                  onChange={(e) => setSelectedObjective(e.target.value)}
+                  label="Seleccionar Objetivo Específico"
+                >
+                  {objectives.map((objective, index) => (
+                    <MenuItem key={index + objective} value={objective}>
+                      {objective}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            )
           )}
           <FormControl fullWidth variant="outlined" sx={{ marginTop: '20px', marginBottom: '20px' }}>
             <InputLabel id="monto">Monto</InputLabel>
@@ -114,9 +139,14 @@ function AddBudget({ project }) {
           <Button variant="outlined" color="error" onClick={() => setIsOpen(false)}>
             Cancelar
           </Button>
-          <Button variant="outlined" color="secondary" onClick={handleCrearDoc}>
-            Subir Presupuestos
-          </Button>
+          <LoadingButton
+            variant="outlined"
+            color="secondary"
+            onClick={handleCrearDoc}
+            loading={submitting}
+          >
+            Subir Presupuesto
+          </LoadingButton>
         </DialogActions>
       </Dialog>
     </Box>

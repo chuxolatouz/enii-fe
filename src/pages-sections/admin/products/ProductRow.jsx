@@ -26,17 +26,10 @@ const ProductRow = ({ product, fetchProducts }) => {
 
   const router = useRouter();
   const { user } = useApi();
-  console.log('----------------------')
-  console.log(product)
-  console.log(fecha_inicio)
-  console.log(_id);
-  const fechaObjeto = fecha_inicio && typeof fecha_inicio === 'string' ? new Date(fecha_inicio) : new Date(NaN); // NaN representa "Not a Number" para una fecha inválida
-  console.log(fechaObjeto);
-  console.log(Number.isNaN(fechaObjeto.getTime()));
-  console.log('----------------------')
   
   return (
-    <StyledTableRow tabIndex={-1} role="checkbox">
+    // biome-ignore lint/a11y/useSemanticElements: <explanation>
+<StyledTableRow tabIndex={-1} role="checkbox">
       <StyledTableCell align="left">
         <FlexBox alignItems="center" gap={1.5}>
           {/* <Avatar
