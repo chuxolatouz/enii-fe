@@ -22,7 +22,7 @@ import ProductMovements from "pages-sections/admin/products/ProductMovements";
 import ProductLogs from "pages-sections/admin/products/ProductLogs";
 import ProductBudget from "pages-sections/admin/products/ProductBudget";
 import { useApi } from "contexts/AxiosContext";
-
+import { useSnackbar } from 'notistack';
 import AddFixedRules from "./actions/add/AddFixedRules";
 import AddRules from "./actions/add/AddRules";
 import FinishProject from "./actions/complete/FinishProject";
@@ -36,10 +36,12 @@ const ProductDetails = ({ product }) => {
     const [value, setValue] = useState("1");
     const [categories, setCategories] = useState([]);
     const { api } = useApi();
+    const { enqueueSnackbar } = useSnackbar();
     const handleChange = (event, newValue) => {
         setValue(newValue);
 
     };
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
     useEffect(() => {
       api.get('/mostrar_categorias')
       .then((response) => {
@@ -205,9 +207,24 @@ const ProductDetails = ({ product }) => {
                     /> 
                   )}
                 {!product.status?.finished && (<FlexBox alignItems="center" gap={2}><FinishProject project={product} /></FlexBox>)}
-                {product.status?.finished && (<FlexBox alignItems="center" gap={2}>
-                    <DownloadEndPDF project={product} />
-                  </FlexBox>)}
+                {product.status?.finished && (
+                  <>
+                    <FlexBox alignItems="center" gap={2}>
+                      <DownloadEndPDF project={product} />
+                    </FlexBox>
+
+                    {product?.acta_finalizacion?.documento_url && (
+                      <Button
+                        variant="outlined"
+                        color="primary"
+                        sx={{ mt: 2 }}
+                        onClick={() => window.open(product.acta_finalizacion.documento_url, '_blank')}
+                      >
+                        Descargar versión oficial
+                      </Button>
+                    )}
+                  </>
+                )} 
             </Card>
         </Grid>
         <Grid item md={9} xs={12}>

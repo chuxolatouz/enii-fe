@@ -58,7 +58,6 @@ const styles = StyleSheet.create({
 });
 
 function Acta({ project, movements = [], logs = [], budgets= [] }) {
-  console.log(logs);
   return (
     <Document>
       <Page size="A4" style={styles.page}>
