@@ -28,6 +28,7 @@ function Documentos({ project }) {
     setPagination(value);
   };
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     api
       .get(`/proyecto/${project._id}/documentos?page=${pagination - 1}`)

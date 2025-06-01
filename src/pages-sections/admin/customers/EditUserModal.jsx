@@ -59,17 +59,6 @@ const EditUserModal = ({ open, onClose, user, onSuccess }) => {
           />
         </Box>
 
-        <Box mb={2}>
-          <TextField
-            label="Correo Electrónico"
-            fullWidth
-            value={user.email}
-            InputProps={{
-              readOnly: true,
-            }}
-          />
-        </Box>
-
         {user.is_admin && (
           <Box mb={2}>
             <TextField

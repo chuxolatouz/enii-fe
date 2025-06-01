@@ -15,12 +15,14 @@ import {
 import Verify from "components/icons/Verify";
 import TodoList from 'components/icons/duotone/TodoList';
 import { format } from "date-fns";
+import { useRouter } from "next/router";
 import { FlexBox } from "components/flex-box";
-import { H3, H5, H6, Paragraph, Span } from "components/Typography";
+import { H3, H5, H6, Span } from "components/Typography";
 import ProductUsers from "pages-sections/admin/products/ProductUsers";
 import ProductMovements from "pages-sections/admin/products/ProductMovements";
 import ProductLogs from "pages-sections/admin/products/ProductLogs";
 import ProductBudget from "pages-sections/admin/products/ProductBudget";
+import ProductReport from "pages-sections/admin/products/ProductReport";
 import { useApi } from "contexts/AxiosContext";
 import { useSnackbar } from 'notistack';
 import AddFixedRules from "./actions/add/AddFixedRules";
@@ -32,15 +34,26 @@ import DownloadEndPDF from './actions/complete/DownloadEndPDF';
 // ===================================================================
 
 const ProductDetails = ({ product }) => {
-
-    const [value, setValue] = useState("1");
+    const router = useRouter();
+    const [tab, setTab] = useState("0");
     const [categories, setCategories] = useState([]);
     const { api } = useApi();
     const { enqueueSnackbar } = useSnackbar();
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
 
+    const handleChange = (_, newValue) => {
+      setTab(newValue);
     };
+    
+    
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+    useEffect(() => {
+      // Solo al montar el componente: si hay tab en query, lo usamos
+      if (router.query.tab) {
+        setTab(router.query.tab);
+      }
+    }, []);
+    
+
     // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
     useEffect(() => {
       api.get('/mostrar_categorias')
@@ -233,14 +246,18 @@ const ProductDetails = ({ product }) => {
                     p: 3,
                 }}
             >
-            <TabContext value={value}>
+            <TabContext value={tab}>
               <TabList onChange={handleChange} centered>
+                <Tab value="0" label="Detalles" />
                 <Tab value="1" label="Usuarios" />
                 <Tab value="2" label="Movimientos" />
                 <Tab value="3" label="Presupuestos" />
                 <Tab value="4" label="Logs" />
               </TabList>
               <Box>
+                <TabPanel value="0">
+                  <ProductReport />
+                </TabPanel>
                 <TabPanel value="1">
                   <ProductUsers id={product._id} users={product.miembros}/>
                 </TabPanel>

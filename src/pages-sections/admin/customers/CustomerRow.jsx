@@ -61,7 +61,7 @@ const CustomerRow = ({ customer, fetchUsers }) => {
     <StyledTableRow tabIndex={-1} >
       <StyledTableCell align="left">
         <FlexBox alignItems="center" gap={1.5}>
-          <Avatar src={avatar} />
+          {/* <Avatar src={avatar} /> */}
           <Box>
             <Paragraph>{nombre}</Paragraph>
             {customer.is_admin && (
@@ -87,7 +87,7 @@ const CustomerRow = ({ customer, fetchUsers }) => {
           </Tooltip>
 
           <Tooltip title="Editar usuario">
-            <StyledIconButton onClick={() => openEditUser(true)}>
+            <StyledIconButton onClick={() => setOpenEditUser(true)}>
               <Edit color="secondary" />
             </StyledIconButton>
           </Tooltip>

@@ -47,6 +47,7 @@ function Movimientos({ id }) {
     }
 })
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     fetchBalance();
   }, [pagination]);

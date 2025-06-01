@@ -29,6 +29,7 @@ function Logs({ id }) {
     setPagination(value);
   };
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     api
       .get(`/proyecto/${id}/logs?page=${pagination - 1}`)
@@ -44,7 +45,7 @@ function Logs({ id }) {
         }
     })
   }, [pagination]);
-  console.log(id, actions)
+
   return (
     <Box>
       <TableContainer component={Paper}>

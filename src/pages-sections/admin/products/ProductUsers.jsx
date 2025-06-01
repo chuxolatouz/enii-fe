@@ -63,6 +63,7 @@ function ProjectUsers({ users, id }) {
     return newData;
   };
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (users) {
       setListUsers(castUsers(users));
