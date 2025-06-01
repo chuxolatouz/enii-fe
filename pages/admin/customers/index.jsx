@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Box, Card, Stack, Table, TableContainer } from "@mui/material";
+import { Box, Card, Stack, Table, TableContainer, Button } from "@mui/material";
 import TableBody from "@mui/material/TableBody";
 import { H3 } from "components/Typography";
 import Scrollbar from "components/Scrollbar";
@@ -51,7 +51,7 @@ export default function CustomerList() {
   const fetchUsers = () => api.get(
     `/mostrar_usuarios?page=${pagination.page}`,
   ).then((respon) => {
-    setTotalCount(pagination.total);
+    setTotalCount(respon.data.count);
     setData(respon.data.request_list);
   }).catch((error) => {
     if (error.response) {
@@ -61,6 +61,7 @@ export default function CustomerList() {
     }
 });
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     fetchUsers()
   }, [pagination])
@@ -86,7 +87,9 @@ export default function CustomerList() {
   return (
     <Box py={4}>
       <H3 mb={2}>Usuarios</H3>
-
+      <Button variant="outlined" color="success"  onClick={() => router.push('/admin/customers/create')}>
+        Agregar Usuario
+      </Button>
       <Card>
         <Scrollbar>
           <TableContainer

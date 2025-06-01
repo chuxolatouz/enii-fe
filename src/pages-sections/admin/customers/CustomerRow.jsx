@@ -1,12 +1,16 @@
 import { useState } from 'react';
-import { Delete } from "@mui/icons-material";
-import { 
+import {
+  Delete,
+  Visibility,
+  Edit,
+  Shield
+} from "@mui/icons-material";
+import {
   Avatar,
-  Button,
-  Dialog,
-  DialogTitle,
-  DialogActions,
-  Tooltip
+  Chip,
+  Box,  
+  Tooltip,
+  Stack
 } from "@mui/material";
 import { FlexBox } from "components/flex-box";
 import { Paragraph } from "components/Typography";
@@ -16,80 +20,117 @@ import {
   StyledTableRow,
 } from "../StyledComponents";
 import { useSnackbar } from 'notistack';
-import { useApi } from 'contexts/AxiosContext'
-import Router from 'next/router';
-
-
-// ========================================================================
+import { useApi } from 'contexts/AxiosContext';
+import DeleteUserModal from "./DeleteUserModal";
+import ChangeUserRoleModal from "./ChangeUserRoleModal";
+import ShowUserModal from "./ShowUserModal";
+import EditUserModal from './EditUserModal';
 
 // ========================================================================
 
 const CustomerRow = ({ customer, fetchUsers }) => {
   const { email, nombre, avatar } = customer;
-  const [open, setOpen] = useState(false);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [openChangeRole, setOpenChangeRole] = useState(false);
+  const [openEditUser, setOpenEditUser] = useState(false);
+  const [openShowUser, setOpenShowUser] = useState(false);
+
   const { enqueueSnackbar } = useSnackbar();
   const { api } = useApi();
 
-  const handleDelete = () => {
-    setOpen(true);
-  };
+  const handleDelete = () => setIsDeleteOpen(true);
+  const handleCancelDelete = () => setIsDeleteOpen(false);
 
   const handleConfirmDelete = () => {
-  // Elimina el usuario con el ID `userIdToDelete` y cierra el cuadro de diálogo.
-    const data = {
+    api.post('/eliminar_usuario', {
       id_usuario: customer._id.$oid,
-    };
-    api.post('/eliminar_usuario', data).then((response) => {
-      enqueueSnackbar(response.data.message, { variant: 'success'})
+    }).then((response) => {
+      enqueueSnackbar(response.data.message, { variant: 'success' });
       handleCancelDelete();
       fetchUsers();
     }).catch((error) => {
       if (error.response) {
-        enqueueSnackbar(error.response.data.message, { variant: 'error'})
+        enqueueSnackbar(error.response.data.message, { variant: 'error' });
       } else {
-          enqueueSnackbar(error.message, { variant: 'error'})
+        enqueueSnackbar(error.message, { variant: 'error' });
       }
     });
   };
 
-  const handleCancelDelete = () => {
-  // Cierra el cuadro de diálogo de confirmación.
-    setOpen(false);
-  };
-  console.log(customer)
   return (
-    <StyledTableRow tabIndex={-1} role="checkbox">
+    <StyledTableRow tabIndex={-1} >
       <StyledTableCell align="left">
         <FlexBox alignItems="center" gap={1.5}>
           <Avatar src={avatar} />
-          <Paragraph>{nombre}</Paragraph>
+          <Box>
+            <Paragraph>{nombre}</Paragraph>
+            {customer.is_admin && (
+              <Chip
+                label="Admin"
+                size="small"
+                color="warning"
+                sx={{ mt: 0.5 }}
+              />
+            )}
+          </Box>
         </FlexBox>
       </StyledTableCell>
 
-      <StyledTableCell
-        align="left"
-        sx={{
-          fontWeight: 400,
-        }}
-      >
-        {email}
-      </StyledTableCell>
+      <StyledTableCell align="left">{email}</StyledTableCell>
 
       <StyledTableCell align="center">
-        <StyledIconButton onClick={() => handleDelete(customer)}>
-          <Tooltip title="Eliminar usuario de la plataforma">
-            <Delete />
+        <Stack direction="row" spacing={1} justifyContent="center">
+          <Tooltip title="Ver usuario">
+            <StyledIconButton onClick={() => setOpenShowUser(true)}>
+              <Visibility color="success" />
+            </StyledIconButton>
           </Tooltip>
-        </StyledIconButton>
+
+          <Tooltip title="Editar usuario">
+            <StyledIconButton onClick={() => openEditUser(true)}>
+              <Edit color="secondary" />
+            </StyledIconButton>
+          </Tooltip>
+
+          <Tooltip title="Cambiar rol">
+            <StyledIconButton onClick={() => setOpenChangeRole(true)}>
+              <Shield color="warning"/>
+            </StyledIconButton>
+          </Tooltip>
+
+          <Tooltip title="Eliminar usuario de la plataforma">
+            <StyledIconButton onClick={handleDelete}>
+              <Delete color="error" />
+            </StyledIconButton>
+          </Tooltip>
+        </Stack>
       </StyledTableCell>
-      <Dialog open={open} onClose={handleCancelDelete}>
-        <DialogTitle>¿Estás seguro de que quieres eliminar este usuario?</DialogTitle>
-        <DialogActions>
-          <Button color="error" onClick={handleCancelDelete}>Cancelar</Button>
-          <Button color="secondary" onClick={handleConfirmDelete}>Eliminar</Button>
-        </DialogActions>
-      </Dialog>
+
+      <DeleteUserModal
+        open={isDeleteOpen}
+        onClose={handleCancelDelete}
+        onConfirm={handleConfirmDelete}
+        onSuccess={fetchUsers}
+      />
+      <ChangeUserRoleModal
+        open={openChangeRole}
+        onClose={() => setOpenChangeRole(false)}
+        user={customer}
+        onSuccess={fetchUsers}
+      />
+      <ShowUserModal
+        open={openShowUser}
+        onClose={() => setOpenShowUser(false)}
+        user={customer}
+      />
+      <EditUserModal
+        open={openEditUser}
+        onClose={() => setOpenEditUser(false)}
+        user={customer}
+        onSuccess={fetchUsers}
+      />
     </StyledTableRow>
   );
 };
+
 export default CustomerRow;
