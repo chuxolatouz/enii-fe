@@ -256,7 +256,7 @@ const ProductDetails = ({ product }) => {
               </TabList>
               <Box>
                 <TabPanel value="0">
-                  <ProductReport />
+                  <ProductReport id={product._id}/>
                 </TabPanel>
                 <TabPanel value="1">
                   <ProductUsers id={product._id} users={product.miembros}/>
