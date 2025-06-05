@@ -1,4 +1,11 @@
-import { Button, Card, Grid, TextField } from "@mui/material";
+import { 
+  Button,
+  Card,
+  Grid,
+  TextField,
+  Checkbox,
+  FormControlLabel
+} from "@mui/material";
 import { Formik } from "formik";
 
 // ================================================================
@@ -86,6 +93,20 @@ const CustomerForm = (props) => {
                   InputLabelProps={{
                     shrink: true,
                   }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      name="is_admin"
+                      color="info"
+                      checked={values.is_admin}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                    />
+                  }
+                  label="¿Es administrador?"
                 />
               </Grid>
               <Grid item sm={6} xs={12}>

@@ -20,7 +20,7 @@ import {
   
     const handleChangeRole = () => {
       const data = {
-        id_usuario: user._id.$oid,
+        id: user._id.$oid,
         nuevo_rol: selectedRole === "admin",
       };
   

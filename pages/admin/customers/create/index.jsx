@@ -18,17 +18,18 @@ export default function CreateProduct() {
   const INITIAL_VALUES = {
     nombre: "",
     email: "",
-    password: ""
+    password: "",
+    is_admin: false,
   };
   const validationSchema = yup.object().shape({
   nombre: yup.string().required("required"),
   email: yup.string().email().required("required"),
   password: yup.string().required("required"),
-    
+  is_admin: yup.boolean().required("required"),
   });
   const { api } = useApi();
   const { enqueueSnackbar } = useSnackbar();
-  const router= useRouter();
+  const router = useRouter();
   
 
   const handleFormSubmit = (values) => {

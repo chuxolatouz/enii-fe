@@ -6,6 +6,7 @@ import Scrollbar from "components/Scrollbar";
 import TableHeader from "components/data-table/TableHeader";
 import TablePagination from "components/data-table/TablePagination";
 import VendorDashboardLayout from "components/layouts/vendor-dashboard";
+import { useRouter } from "next/router";
 import { CustomerRow } from "pages-sections/admin";
 import { useApi } from 'contexts/AxiosContext';
 import { useSnackbar } from 'notistack';
@@ -45,6 +46,7 @@ export default function CustomerList() {
     page: 0,
     limit: 10
   });
+  const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
   const { api } = useApi();
