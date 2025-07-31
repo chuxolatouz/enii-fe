@@ -7,7 +7,8 @@ export const AxiosContext = createContext();
 export function AxiosProvider({ children }) {
   // const BASE_URL = "https://gpt-seven-blond.vercel.app/";
   // const BASE_URL = "http://localhost:5000/"
-  const BASE_URL = process.env.NEXT_APP_BACKEND || "http://localhost:5000/";
+  
+  const BASE_URL = process.env.NEXT_PUBLIC_APP_BACKEND || "http://localhost:5000/";
   const router = useRouter();
 
   const user = useMemo(() => {
