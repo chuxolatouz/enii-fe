@@ -31,7 +31,7 @@ export default function CreateProduct() {
   fecha_inicio: yup.string().required("obligatorio"),
   fecha_fin: yup.string().required("obligatorio"),
   objetivo_general: yup.string(),
-  objetivos_especificos: yup.array().of("yup.string()"),
+  objetivos_especificos: yup.array().of(yup.string()),
   })
   
   const { api } = useApi();
