@@ -26,7 +26,8 @@ const ProductRow = ({ product, fetchProducts }) => {
 
   const router = useRouter();
   const { user } = useApi();
-  
+  const fechaInicio = fecha_inicio?.$date || fecha_inicio;
+  const fechaFin = fecha_fin?.$date || fecha_fin;
   return (
     // biome-ignore lint/a11y/useSemanticElements: <explanation>
 <StyledTableRow tabIndex={-1} role="checkbox">
@@ -45,10 +46,10 @@ const ProductRow = ({ product, fetchProducts }) => {
         </FlexBox>
       </StyledTableCell>
       <StyledTableCell>
-        <Paragraph>{format(new Date(fecha_inicio), "dd/MM/yyyy")}</Paragraph>
+        <Paragraph>{format(new Date(fechaInicio), "dd/MM/yyyy")}</Paragraph>
       </StyledTableCell>
       <StyledTableCell>
-        <Paragraph>{format(new Date(fecha_fin), "dd/MM/yyyy")}</Paragraph>
+        <Paragraph>{format(new Date(fechaFin), "dd/MM/yyyy")}</Paragraph>
       </StyledTableCell>
 
 
@@ -78,7 +79,7 @@ const ProductRow = ({ product, fetchProducts }) => {
       </StyledTableCell>
 
       <StyledTableCell align="center">
-        {user.role === "admin" && <StyledIconButton
+        {(user.role === "admin" && !status?.finished) && <StyledIconButton
           onClick={() => router.push(`/admin/products/edit/${_id.$oid}`)}
           >
           <Tooltip title="Editar info de Proyecto">

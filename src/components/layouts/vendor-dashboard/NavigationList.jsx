@@ -42,11 +42,11 @@ export const navigations = [
     icon: duotone.Customers,
     path: "/admin/customers",
   },
-  {
-    name: "Configuraciones",
-    icon: duotone.SiteSetting,
-    path: "/vendor/site-settings",
-  },
+  // {
+  //   name: "Configuraciones",
+  //   icon: duotone.SiteSetting,
+  //   path: "/vendor/site-settings",
+  // },
   {
     name: "Logout",
     icon: duotone.Session,
